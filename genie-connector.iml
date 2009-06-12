@@ -11,13 +11,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="src" level="project" />
-    <orderEntry type="library" exported="" name="Maven: com.sun.jna:jna:3.0.9" level="project" />
-    <orderEntry type="library" name="Maven: junit:junit:4.5" level="project" />
-    <orderEntry type="library" exported="" name="Maven: commons-lang:commons-lang:2.4" level="project" />
-    <orderEntry type="library" exported="" name="Maven: org.slf4j:slf4j-api:1.5.6" level="project" />
-    <orderEntry type="library" exported="" name="Maven: org.slf4j:slf4j-jdk14:1.5.6" level="project" />
-    <orderEntry type="library" exported="" name="Maven: net.sourceforge.findbugs:annotations:1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
   </component>
 </module>
 
