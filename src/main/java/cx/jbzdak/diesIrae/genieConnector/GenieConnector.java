@@ -36,7 +36,7 @@ public class GenieConnector {
      */
     private final DscPointer dsc;
 
-    private State state = State.NOT_OPENED;
+    private ConnectorState connectorState = ConnectorState.NOT_OPENED;
 
     private FlushType flush = FlushType.AUTO_COMMIT;
 
@@ -46,7 +46,7 @@ public class GenieConnector {
 
     private short endChannel;
 
-    public GenieConnector() {
+   public GenieConnector() {
         PointerByReference dsc = new PointerByReference(Pointer.NULL);
         try {
             LibraryConnector.iUtlCreateFileDSC2(dsc);
@@ -63,7 +63,7 @@ public class GenieConnector {
             @Override
             Void doCall() throws ConnectorException {
                 LibraryConnector.openDatasource(dsc,file.getAbsolutePath(), SourceType.FILE,  mode, false, "");
-                state = State.OPEN;
+                connectorState = ConnectorState.OPEN;
                 return null;
             }
         });        
@@ -139,7 +139,7 @@ public class GenieConnector {
        callWrapper.doCall(new Call<Void>(){
             @Override
             Void doCall() throws ConnectorException {
-                if(state == State.OPEN){
+                if(connectorState == ConnectorState.OPEN){
                     LibraryConnector.closeDataSource(dsc);
                 }
                 LibraryConnector.close(dsc);
@@ -149,13 +149,13 @@ public class GenieConnector {
             }
             @Override
             void doFinally() {
-                state = State.CLOSED;
+                connectorState = ConnectorState.CLOSED;
             }
         });
     }
 
     public void close(){
-        if(state == State.CLOSED){
+        if(connectorState == ConnectorState.CLOSED){
             throw new IllegalStateException();
         }
         closeNoCheck();        
@@ -194,22 +194,18 @@ public class GenieConnector {
     }
 
     private void assertOpened(){
-        if(state != State.OPEN){
+        if(connectorState != ConnectorState.OPEN){
             throw new IllegalStateException("Can't call this method on closed or uninitialized Connector");
         }
     }
 
     private void assertMayOpen(){
-        if(state != State.NOT_OPENED){
+        if(connectorState != ConnectorState.NOT_OPENED){
             throw new IllegalStateException("Can't call this method on opened Connector");
         }
     }
 
-    private enum State{
-        NOT_OPENED, OPEN, CLOSED
-    }
-
-    class CallWrapper{
+   class CallWrapper{
         public <T> T doCall(Call<T> call) throws GenieException{
             try {
                 return call.doCall();
