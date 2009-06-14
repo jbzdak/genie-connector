@@ -5,6 +5,8 @@ import com.sun.jna.ptr.PointerByReference;
 import cx.jbzdak.diesIrae.genieConnector.enums.*;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
@@ -42,9 +44,11 @@ public class GenieConnector {
 
    private DeviceType deviceType = DeviceType.MCA;
 
-   private short startChannel;
+   private short startChannel = 1;
 
-   private short endChannel;
+   private short endChannel = 1;
+
+   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
    public GenieConnector() {
       PointerByReference dsc = new PointerByReference(Pointer.NULL);
@@ -63,7 +67,7 @@ public class GenieConnector {
          @Override
          Void doCall() throws ConnectorException {
             LibraryConnector.openDatasource(dsc,file.getAbsolutePath(), SourceType.FILE,  mode, false, "");
-            connectorState = ConnectorState.OPEN;
+            setConnectorState(ConnectorState.OPEN);
             return null;
          }
       });
@@ -103,6 +107,12 @@ public class GenieConnector {
          @Override
          Void doCall() throws ConnectorException {
             LibraryConnector.controlDSC(dsc, deviceType, opCode);
+            if(opCode == OpCode.START_ACQUISITION){
+               setConnectorState(ConnectorState.ACQUIRING);
+            }
+            if(opCode == OpCode.ABORT_ACQUISITION){
+               setConnectorState(ConnectorState.OPEN);
+            }
             return null;
          }
       });
@@ -139,7 +149,7 @@ public class GenieConnector {
       callWrapper.doCall(new Call<Void>(){
          @Override
          Void doCall() throws ConnectorException {
-            if(connectorState == ConnectorState.OPEN){
+            if(getConnectorState() == ConnectorState.OPEN){
                LibraryConnector.closeDataSource(dsc);
             }
             LibraryConnector.close(dsc);
@@ -149,13 +159,13 @@ public class GenieConnector {
          }
          @Override
          void doFinally() {
-            connectorState = ConnectorState.CLOSED;
+            setConnectorState(ConnectorState.CLOSED);
          }
       });
    }
 
    public void close(){
-      if(connectorState == ConnectorState.CLOSED){
+      if(getConnectorState() == ConnectorState.CLOSED){
          throw new IllegalStateException();
       }
       closeNoCheck();
@@ -177,32 +187,70 @@ public class GenieConnector {
       this.deviceType = deviceType;
    }
 
+   public void setEndChannel(int endChannel) {
+      int oldEndChannel = this.endChannel;
+      this.endChannel = (short) endChannel;
+      support.firePropertyChange("endChannel", oldEndChannel, this.endChannel);
+   }
+
    public int getEndChannel() {
       return endChannel;
    }
 
-   public void setEndChannel(short endChannel) {
-      this.endChannel = endChannel;
+   public void setStartChannel(int startChannel) {
+      int oldStartChannel = this.startChannel;
+      this.startChannel = (short) startChannel;
+      support.firePropertyChange("startChannel", oldStartChannel, this.startChannel);
    }
-
+                 
    public int getStartChannel() {
       return startChannel;
    }
 
-   public void setStartChannel(short startChannel) {
-      this.startChannel = startChannel;
-   }
-
    private void assertOpened(){
-      if(connectorState != ConnectorState.OPEN){
+      if(!EnumSet.of(ConnectorState.OPEN, ConnectorState.ACQUIRING).contains(connectorState)){
          throw new IllegalStateException("Can't call this method on closed or uninitialized Connector");
       }
    }
 
    private void assertMayOpen(){
-      if(connectorState != ConnectorState.NOT_OPENED){
+      if(getConnectorState() != ConnectorState.NOT_OPENED){
          throw new IllegalStateException("Can't call this method on opened Connector");
       }
+   }
+
+   public ConnectorState getConnectorState() {
+      return connectorState;
+   }
+
+   public void setConnectorState(ConnectorState connectorState) {
+      ConnectorState oldConnectorState = this.connectorState;
+      this.connectorState = connectorState;
+      support.firePropertyChange("connectorState", oldConnectorState, this.connectorState);
+   }
+
+   public void addPropertyChangeListener(PropertyChangeListener listener) {
+      support.addPropertyChangeListener(listener);
+   }
+
+   public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+      support.addPropertyChangeListener(propertyName, listener);
+   }
+
+   public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+      support.removePropertyChangeListener(propertyName, listener);
+   }
+
+   public boolean hasListeners(String propertyName) {
+      return support.hasListeners(propertyName);
+   }
+
+   public PropertyChangeListener[] getPropertyChangeListeners() {
+      return support.getPropertyChangeListeners();
+   }
+
+   public void removePropertyChangeListener(PropertyChangeListener listener) {
+      support.removePropertyChangeListener(listener);
    }
 
    class CallWrapper{
