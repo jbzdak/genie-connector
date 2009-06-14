@@ -73,6 +73,18 @@ public class GenieConnector {
       });
    }
 
+   public void openSource(final String datasource, final EnumSet<OpenMode> mode, final SourceType type){
+      assertMayOpen();
+      callWrapper.doCall(new Call<Void>(){
+         @Override
+         Void doCall() throws ConnectorException {
+            LibraryConnector.openDatasource(dsc,datasource, type,  mode, false, "");
+            setConnectorState(ConnectorState.OPEN);
+            return null;
+         }
+      }, "datasource='" +datasource + "'", "mode='" + mode +"'");
+   }
+
    public <T> T getParam(final Parameter<T> parameter, final int record, final int entry){
       assertOpened();
       return callWrapper.doCall(new Call<T>() {
@@ -254,11 +266,11 @@ public class GenieConnector {
    }
 
    class CallWrapper{
-      public <T> T doCall(Call<T> call) throws GenieException{
+      public <T> T doCall(Call<T> call, Object... additionalInfo) throws GenieException{
          try {
             return call.doCall();
          } catch (ConnectorException e) {
-            throw new GenieException(e.getCode(), dsc);
+            throw new GenieException(e.getCode(), dsc, additionalInfo);
          }finally {
             call.doFinally();
          }
