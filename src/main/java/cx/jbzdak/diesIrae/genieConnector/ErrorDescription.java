@@ -13,7 +13,7 @@ import java.util.Map;
  * User: Jacek Bzdak jbzdak@gmail.com
  */
 @SuppressWarnings({"MagicNumber"})
-public class ErrorDescription {
+public class ErrorDescription {  
 
     private static final Map<Integer, String> detailedMessages =
             Collections.synchronizedMap(DefaultedMap.decorate(new HashMap(),"Nie określono wiadomości szczegółowej"));
@@ -21,6 +21,8 @@ public class ErrorDescription {
     static{
         detailedMessages.put(0xfffd, "Ogólny błąd połączenia z VDM");
         detailedMessages.put(0x8e2a, "Plik otwarty przez inny program i nie można się nim podzielić ;)");
+        detailedMessages.put(0xfff7, "Wywołanie niepoprawnej operacji -- nie wiem na pewno, zgaduje -- ten błąd pojawia się jak" +
+                " wywoła się start akwizycji danych na pliku z zapisanymi pomiarami");
     }
 
     private final Long originalErrorCode;

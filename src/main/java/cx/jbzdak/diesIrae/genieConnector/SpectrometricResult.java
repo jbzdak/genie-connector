@@ -30,6 +30,10 @@ public class SpectrometricResult {
         return contents.asReadOnlyBuffer();
     }
 
+   public RegionOfInterest getRoi(int roiStartChannel, int roiEndChannel){
+      return new RegionOfInterest((short)roiStartChannel, (short)roiEndChannel, this);      
+   }
+
     public int getCountForChannel(int channelNum){
         return contents.get(channelNum - startChannel);    
     }
