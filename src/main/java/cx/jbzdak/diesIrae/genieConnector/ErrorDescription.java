@@ -23,6 +23,7 @@ public class ErrorDescription {
         detailedMessages.put(0x8e2a, "Plik otwarty przez inny program i nie można się nim podzielić ;)");
         detailedMessages.put(0xfff7, "Wywołanie niepoprawnej operacji -- nie wiem na pewno, zgaduje -- ten błąd pojawia się jak" +
                 " wywoła się start akwizycji danych na pliku z zapisanymi pomiarami");
+        detailedMessages.put(0xfff4, "Network configuration file error");
     }
 
     private final Long originalErrorCode;

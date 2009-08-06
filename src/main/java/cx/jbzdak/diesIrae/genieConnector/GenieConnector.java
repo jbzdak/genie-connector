@@ -4,6 +4,9 @@ import com.sun.jna.*;
 import com.sun.jna.ptr.PointerByReference;
 import cx.jbzdak.diesIrae.genieConnector.enums.*;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
+import cx.jbzdak.diesIrae.genieConnector.structs.DSPresetTime;
+import org.apache.commons.collections.functors.CloneTransformer;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -47,6 +50,8 @@ public class GenieConnector {
    private short startChannel = 1;
 
    private short endChannel = 1;
+
+   private DSPreset preset;
 
    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -150,7 +155,7 @@ public class GenieConnector {
          SpectrometricResult doCall() throws ConnectorException {
             return new SpectrometricResult((short) start, (short) end,LibraryConnector.getSpectralData(dsc, (short)start, (short)end));
          }
-      });
+      }, "start= " + start, "end = " + end);
    }
 
    public SpectrometricResult getSpectrometricData(){
@@ -181,6 +186,35 @@ public class GenieConnector {
          throw new IllegalStateException();
       }
       closeNoCheck();
+   }
+
+
+   public DSPreset getPreset() {
+      return (DSPreset) CloneTransformer.getInstance().transform(preset);
+   }
+
+   public void setTimeout(double timeout){
+      DSPreset preset = new DSPreset();
+      DSPresetTime time = new DSPresetTime();
+      time.setTime(timeout);
+      preset.setDsPresetTime(time);
+      preset.setUlStartCh(new NativeLong(getStartChannel()));
+      preset.setUlStopCh(new NativeLong(getEndChannel()));
+      preset.setFlPsetMode(PresetMode.REAL);
+      setPreset(preset);
+   }
+
+   void setPreset(final DSPreset preset) {
+      if(this.preset != preset){
+         this.preset = preset;
+         callWrapper.doCall(new Call<Object>() {
+            @Override
+            Object doCall() throws ConnectorException {
+               LibraryConnector.setPreset(dsc, preset);
+               return null;
+            }
+         }, "preset = " + preset);
+      }      
    }
 
    public FlushType getFlush() {

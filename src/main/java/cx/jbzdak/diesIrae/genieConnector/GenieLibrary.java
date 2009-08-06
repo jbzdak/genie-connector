@@ -2,6 +2,7 @@ package cx.jbzdak.diesIrae.genieConnector;
 
 import com.sun.jna.Library;
 import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.ptr.ShortByReference;
@@ -96,6 +97,8 @@ interface GenieLibrary extends Library{
      * @return kod błędu
      */
     public short SadDeleteDSC(DscPointer dsc);
+
+    public short SadPutStruct(DscPointer sdc, short structType, short record, short entry, Pointer ptr, short structSize);
 
     /**
      * Powoduje wyplucie danych do pliku/urządzenia

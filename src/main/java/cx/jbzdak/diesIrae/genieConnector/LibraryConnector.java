@@ -1,11 +1,13 @@
 package cx.jbzdak.diesIrae.genieConnector;
 
 import com.sun.jna.NativeLong;
+import com.sun.jna.Structure;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.ptr.ShortByReference;
 import cx.jbzdak.diesIrae.genieConnector.enums.*;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSResult;
 
@@ -139,6 +141,18 @@ class LibraryConnector{
         return Status.decode(result.getStatus());
 
     }
+
+   public static void putStruct(DscPointer dscPointer, Structure structure) throws ConnectorException{
+      putStruct(dscPointer, structure, (short) 1, (short) 1);
+   }
+
+   public static void putStruct(DscPointer dscPointer, Structure structure, short entry, short record)throws ConnectorException{
+      checkError(GENIE_LIBRARY.SadPutStruct(dscPointer, StructureType.getStructureId(structure), record, entry, structure.getPointer(), (short) structure.size()));
+   }
+
+   public static void setPreset(DscPointer dscPointer, DSPreset preset) throws ConnectorException{
+      putStruct(dscPointer, preset);
+   }
 
 
     private static void checkError(short errorCode)throws ConnectorException{

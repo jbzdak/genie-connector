@@ -17,7 +17,7 @@ public class ErrorDescriptionTest {
 
     @Before
     public void before(){
-         desc = new ErrorDescription(0x278e2aL);
+         desc = new ErrorDescription(0x300013l);
     }
 
     @Test
@@ -35,5 +35,8 @@ public class ErrorDescriptionTest {
          Assert.assertEquals(desc.getErrorClass(), ErrorClass.CAM_CLASS);
     }
 
+   public static void main(String[] args){
+      System.out.println(new ErrorDescription(0x300013l));
+   }
 
 }
