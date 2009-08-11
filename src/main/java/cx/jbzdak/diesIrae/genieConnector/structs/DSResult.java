@@ -1,9 +1,11 @@
 package cx.jbzdak.diesIrae.genieConnector.structs;
 
-public class DSResult {
+import com.sun.jna.Structure;
+
+public class DSResult extends Structure{
     
-     private short status;
-     private short busyGroup;
+     public short status;
+     public short busyGroup;
 
     public short getStatus() {
         return status;

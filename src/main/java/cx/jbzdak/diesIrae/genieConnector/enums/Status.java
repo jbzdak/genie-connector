@@ -23,7 +23,7 @@ public enum Status {
     public static EnumSet<Status> decode(int bitField){
         EnumSet<Status> result= EnumSet.noneOf(Status.class);
         for(Status s : Status.values()){
-            if(bitField%s.getValue()==0){
+            if((bitField & s.getValue()) != 0){
                 result.add(s);
             }
         }

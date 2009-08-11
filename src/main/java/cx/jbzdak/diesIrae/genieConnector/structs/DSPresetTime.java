@@ -20,9 +20,9 @@ import java.io.Serializable;
  */
 public class DSPresetTime extends Union implements Serializable{
 
-   private NativeLong sweep;
+   public NativeLong sweep;
 
-   private Double time;
+   public Double time;
 
    public Double getTime() {
       return time;

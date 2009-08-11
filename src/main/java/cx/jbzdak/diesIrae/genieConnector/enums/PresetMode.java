@@ -43,7 +43,7 @@ public enum PresetMode {
             return presetMode;
          }
       }
-      throw new IllegalArgumentException("Unknown presetValue");
+      throw new IllegalArgumentException("Unknown presetValue '" + presetValue + "'");
    }
 
    private final long presetValue;

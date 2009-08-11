@@ -8,13 +8,13 @@ import com.sun.jna.Union;
  */
 public class DSQuery extends Union{
 
-    private DSResult stDS;
+    public DSResult stDS;
 
-    private long flDirty;
+    public long flDirty;
 
-    private long   ulVfyRC;
+    public long   ulVfyRC;
 
-    private long   ulChannels;
+    public long   ulChannels;
 
     public long getFlDirty() {
         return flDirty;

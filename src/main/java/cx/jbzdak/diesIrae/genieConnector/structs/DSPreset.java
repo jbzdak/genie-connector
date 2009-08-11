@@ -21,27 +21,27 @@ public class DSPreset extends Structure implements Serializable{
     * {@link #setFlPsetMode(cx.jbzdak.diesIrae.genieConnector.enums.PresetMode)} for
     * possible values.
     */
-   private NativeLong flPsetMode;
+   public NativeLong flPsetMode;
 
    /**
     * Controls preset time.
     */
-   private DSPresetTime dsPresetTime;
+   public DSPresetTime dsPresetTime;
 
    /**
     * Have no idea what it does. . .
     */
-   private double dPsetComp;
+   public double dPsetComp;
 
    /**
     * First channel that will be read
     */
-   private NativeLong ulStartCh;
+   public NativeLong ulStartCh;
 
    /**
     * Last channel that will be read
     */
-   private NativeLong ulStopCh;
+   public NativeLong ulStopCh;
 
    public void setFlPsetMode(PresetMode flPsetMode){
       updatePresetTime(flPsetMode);
@@ -72,7 +72,7 @@ public class DSPreset extends Structure implements Serializable{
 
    public void setDsPresetTime(DSPresetTime dsPresetTime) {
       this.dsPresetTime = dsPresetTime;
-      if(flPsetMode!=null){
+      if(flPsetMode!=null && flPsetMode.longValue() != 0){
          updatePresetTime(PresetMode.getPresetFromValue(flPsetMode.longValue()));
       }
    }

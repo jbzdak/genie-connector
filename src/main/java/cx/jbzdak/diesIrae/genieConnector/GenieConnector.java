@@ -7,14 +7,15 @@ import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPresetTime;
 import org.apache.commons.collections.functors.CloneTransformer;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.slf4j.Logger;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,6 +32,8 @@ public class GenieConnector {
     * Prefix jaki dodajemy do magicznych funkcji z DLL-a
     */
    static final String FUNCTION_PREFIX = "DLL_WRAPPER_";
+
+   private static final ConnectorStateWatcher CONNECTOR_STATE_WATCHER = new ConnectorStateWatcher();
 
    private final CallWrapper callWrapper = new CallWrapper();
 
@@ -60,10 +63,18 @@ public class GenieConnector {
       try {
          LibraryConnector.iUtlCreateFileDSC2(dsc);
          CloseAllVDMsHook.registerConnector(this);
+         CONNECTOR_STATE_WATCHER.registerConnector(this);
       } catch (ConnectorException e) {
          throw new GenieException("Error while opening VDM", e.getCode());
       }
       this.dsc = new DscPointer(dsc.getValue());
+      support.addPropertyChangeListener(new PropertyChangeListener() {
+         @Override
+         public void propertyChange(PropertyChangeEvent evt) {
+            System.out.println("connector" + ToStringBuilder.reflectionToString(evt));
+         }
+      });
+      updateState();
    }
 
    public void openFile(final File file, final EnumSet<OpenMode> mode){
@@ -88,6 +99,7 @@ public class GenieConnector {
             return null;
          }
       }, "datasource='" +datasource + "'", "mode='" + mode +"'");
+      updateState();
    }
 
    public <T> T getParam(final Parameter<T> parameter, final int record, final int entry){
@@ -171,7 +183,7 @@ public class GenieConnector {
             }
             LibraryConnector.close(dsc);
             CloseAllVDMsHook.deregisterConnector(GenieConnector.this);
-
+            CONNECTOR_STATE_WATCHER.deregisterConnector(GenieConnector.this);
             return null;
          }
          @Override
@@ -205,6 +217,7 @@ public class GenieConnector {
    }
 
    void setPreset(final DSPreset preset) {
+      assertOpened();
       if(this.preset != preset){
          this.preset = preset;
          callWrapper.doCall(new Call<Object>() {
@@ -315,6 +328,59 @@ public class GenieConnector {
       abstract T doCall() throws ConnectorException;
       void doFinally(){}
    }
+
+    private void updateState(){
+       try {
+          if(getConnectorState() != ConnectorState.CLOSED && getConnectorState() != ConnectorState.NOT_OPENED){
+             // System.out.println("GenieConnector$ConnectorStateWatcher$Task.run");
+             //System.out.println("" + LibraryConnector.getStatus(dsc));
+             if(LibraryConnector.getStatus(dsc).contains(Status.DONE)){
+                setConnectorState(ConnectorState.OPEN);
+             }else{
+                setConnectorState(ConnectorState.ACQUIRING);
+             }}
+       } catch (ConnectorException e) {
+          e.printStackTrace();  
+       }
+    }
+
+   private static class ConnectorStateWatcher extends Timer {
+
+      Logger logger = Utils.getLogger();
+
+      Map<GenieConnector, Task> tasks = new HashMap<GenieConnector, Task>();
+
+      public void registerConnector(GenieConnector connector){
+         Task task= new Task(connector);
+         tasks.put(connector, task);
+         scheduleAtFixedRate(task, 200, 1000);
+      }
+
+      public void deregisterConnector(GenieConnector connector){
+         if(tasks.containsKey(connector)){
+            tasks.remove(connector).cancel();
+         }
+      }
+
+
+      
+      private class Task extends TimerTask {
+
+         private final GenieConnector genieConnector;
+
+         private Task(GenieConnector genieConnector) {
+            this.genieConnector = genieConnector;
+         }
+
+         @Override
+         public void run() {
+           genieConnector.updateState();
+         }
+
+      }
+
+   }
+
 }
 
 
