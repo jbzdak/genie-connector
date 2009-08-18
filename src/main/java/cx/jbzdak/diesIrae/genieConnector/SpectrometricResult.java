@@ -12,6 +12,11 @@ public class SpectrometricResult {
     private final short endChannel;
     private final IntBuffer contents;
 
+    public static SpectrometricResult getEmptyResult(short startChannel, short endChannel){
+       IntBuffer intBuffer = IntBuffer.allocate(endChannel);
+       return new SpectrometricResult(startChannel, endChannel, intBuffer);
+    }
+
     public SpectrometricResult(short startChannel, short endChannel, IntBuffer contents) {
         this.startChannel = startChannel;
         this.endChannel = endChannel;

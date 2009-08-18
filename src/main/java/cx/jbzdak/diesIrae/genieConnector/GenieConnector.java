@@ -7,10 +7,8 @@ import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPresetTime;
 import org.apache.commons.collections.functors.CloneTransformer;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -56,6 +54,8 @@ public class GenieConnector {
 
    private DSPreset preset;
 
+   private SpectrometricResult lastResult;
+
    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
    public GenieConnector() {
@@ -68,12 +68,6 @@ public class GenieConnector {
          throw new GenieException("Error while opening VDM", e.getCode());
       }
       this.dsc = new DscPointer(dsc.getValue());
-      support.addPropertyChangeListener(new PropertyChangeListener() {
-         @Override
-         public void propertyChange(PropertyChangeEvent evt) {
-            System.out.println("connector" + ToStringBuilder.reflectionToString(evt));
-         }
-      });
       updateState();
    }
 
@@ -142,6 +136,9 @@ public class GenieConnector {
             if(opCode == OpCode.ABORT_ACQUISITION){
                setConnectorState(ConnectorState.OPEN);
             }
+            if(opCode == OpCode.ABORT_ACQUISITION){
+               setLastResult(SpectrometricResult.getEmptyResult(startChannel, endChannel));
+            }
             return null;
          }
       });
@@ -161,11 +158,22 @@ public class GenieConnector {
       });
    }
 
-   public SpectrometricResult getSpectrometricData(final int start, final int end){
+
+   public SpectrometricResult getLastResult() {
+      return lastResult;
+   }
+
+   private void setLastResult(SpectrometricResult lastResult) {
+      SpectrometricResult oldLastResult = this.lastResult;
+      this.lastResult = lastResult;
+      support.firePropertyChange("lastResult", oldLastResult, this.lastResult);
+   }
+
+   SpectrometricResult getSpectrometricData(final int start, final int end){
       return callWrapper.doCall(new Call<SpectrometricResult>() {
          @Override
          SpectrometricResult doCall() throws ConnectorException {
-            return new SpectrometricResult((short) start, (short) end,LibraryConnector.getSpectralData(dsc, (short)start, (short)end));
+            return new SpectrometricResult((short) start, (short) end, LibraryConnector.getSpectralData(dsc, (short)start, (short)end));
          }
       }, "start= " + start, "end = " + end);
    }
@@ -283,6 +291,7 @@ public class GenieConnector {
    }
 
    public void setConnectorState(ConnectorState connectorState) {
+      System.out.println("GenieConnector.setConnectorState(" +connectorState + ")");
       ConnectorState oldConnectorState = this.connectorState;
       this.connectorState = connectorState;
       support.firePropertyChange("connectorState", oldConnectorState, this.connectorState);
@@ -334,7 +343,8 @@ public class GenieConnector {
           if(getConnectorState() != ConnectorState.CLOSED && getConnectorState() != ConnectorState.NOT_OPENED){
              // System.out.println("GenieConnector$ConnectorStateWatcher$Task.run");
              //System.out.println("" + LibraryConnector.getStatus(dsc));
-             if(LibraryConnector.getStatus(dsc).contains(Status.DONE)){
+             System.out.println("GenieConnector.updateState" + LibraryConnector.getStatus(dsc));
+             if(!LibraryConnector.getStatus(dsc).contains(Status.BUSY)){
                 setConnectorState(ConnectorState.OPEN);
              }else{
                 setConnectorState(ConnectorState.ACQUIRING);
@@ -353,7 +363,7 @@ public class GenieConnector {
       public void registerConnector(GenieConnector connector){
          Task task= new Task(connector);
          tasks.put(connector, task);
-         scheduleAtFixedRate(task, 200, 1000);
+         scheduleAtFixedRate(task, 0, 1000);
       }
 
       public void deregisterConnector(GenieConnector connector){
@@ -374,17 +384,12 @@ public class GenieConnector {
 
          @Override
          public void run() {
-           genieConnector.updateState();
+            genieConnector.updateState();
+            genieConnector.setLastResult(genieConnector.getSpectrometricData());
          }
-
       }
-
    }
-
 }
-
-
-
 
 /**
  * Klasa robi całą magię potrzebna do wczytania biblioteki - czyli:
