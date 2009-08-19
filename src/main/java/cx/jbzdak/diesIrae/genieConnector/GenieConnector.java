@@ -178,6 +178,16 @@ public class GenieConnector {
       }, "start= " + start, "end = " + end);
    }
 
+   public void setSpectrometricData(final SpectrometricResult data){
+     callWrapper.doCall(new Call<Object>() {
+        @Override
+        Object doCall() throws ConnectorException {
+           LibraryConnector.putSpectrum(dsc, data);
+           return null;
+        }
+     }, "data = " + data);
+   }
+
    public SpectrometricResult getSpectrometricData(){
       return getSpectrometricData(startChannel, endChannel);
    }
@@ -341,9 +351,6 @@ public class GenieConnector {
     private void updateState(){
        try {
           if(getConnectorState() != ConnectorState.CLOSED && getConnectorState() != ConnectorState.NOT_OPENED){
-             // System.out.println("GenieConnector$ConnectorStateWatcher$Task.run");
-             //System.out.println("" + LibraryConnector.getStatus(dsc));
-             System.out.println("GenieConnector.updateState" + LibraryConnector.getStatus(dsc));
              if(!LibraryConnector.getStatus(dsc).contains(Status.BUSY)){
                 setConnectorState(ConnectorState.OPEN);
              }else{

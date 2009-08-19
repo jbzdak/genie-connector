@@ -84,6 +84,8 @@ interface GenieLibrary extends Library{
      */
     public short SadGetSpectrum(DscPointer hDSC, short usStart, short usCount, short fFloat, byte pvData );
 
+   public short SadPutSpectrum(DscPointer hDSC, short usStart, short usCount, int[] data);
+
     /**
      * Zamyka żródło danych otwarte przes DSC
      * @param dsc dsc

@@ -31,6 +31,9 @@ public class SpectrometricResult {
         return endChannel;
     }
 
+    public short getSize(){
+      return (short)(endChannel - startChannel);  
+    }
     public IntBuffer getContents() {
         return contents.asReadOnlyBuffer();
     }

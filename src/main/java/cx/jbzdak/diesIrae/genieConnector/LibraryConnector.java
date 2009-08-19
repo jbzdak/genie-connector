@@ -61,6 +61,14 @@ class LibraryConnector{
         checkError(errorCode);
     }
 
+   static void putSpectrum(DscPointer dsc, SpectrometricResult spectrometricResult) throws ConnectorException{
+      int[] results = new int[spectrometricResult.getEndChannel() - spectrometricResult.getStartChannel()];
+      for (int ii = 0; ii < results.length; ii++) {
+         results[ii] =spectrometricResult.getCountForChannel(spectrometricResult.getStartChannel() + ii);
+      }
+      checkError(GENIE_LIBRARY.SadPutSpectrum(dsc, spectrometricResult.getStartChannel(), spectrometricResult.getSize(), results));
+   }
+
      static <T> T getParam(DscPointer dsc, Parameter<T> param, short record, short entry) throws ConnectorException {
          byte[] result = new byte[param.getByteLenght()];
          short errorCode = GENIE_LIBRARY.SadGetParam(dsc, new NativeLong(param.getParamId()),record, entry,result,param.getByteLenght());
@@ -93,43 +101,6 @@ class LibraryConnector{
         return resultBuffer;
 
     }
-//
-//    private static IntBuffer getSpectralData(DscPointer dsc, short startChan, short channelNumber) throws ConnectorException{
-//        if(channelNumber>=4000){
-//            throw new IllegalArgumentException();
-//        }
-//        byte[] resultBytes = new byte[channelNumber * ParameterType.WORD.getByteLenght("")];
-//        short errorCode = GENIE_LIBRARY.SadGetSpectrum(dsc, startChan, channelNumber, (short)0, resultBytes);
-//        checkError(errorCode);
-//
-//
-//        return IntBuffer.wrap(result);
-//    }
-
-//    /**
-//     * Żeby było jasne - ja nie wiem dlaczgeo tak trzeba robić - fakt jest taki że SadGetSpectrum zwraca bajty w złej kolejności
-//     * tj - jeśli liczba zliczeń w kanale wynosi 1 to dana komórka w tabeli zawierać będzie bajty w takiej kolejności:
-//     * 1, 0, 0, 0. Żeby to skonwertować na inta trzeba to odwrócić. . .
-//     * @param resultBytes
-//     * @return
-//     */
-//    private static int[] getSpectrometricInts(byte[] resultBytes){
-//        if(resultBytes.length%4!=0){
-//            throw new IllegalArgumentException();
-//        }
-//        Native.
-//        int channelNumber = resultBytes.length/4;
-//        int[] result = new int[channelNumber];
-//        byte[] integerBytes = new byte[4];
-//        for(int ii = 0; ii <(channelNumber); ii++){
-//            //System.out.print(resultBytes[ii]);
-//             for(int jj=0; jj<4; jj++){
-//                integerBytes[jj] = resultBytes[(4*ii)+3-jj];
-//             }
-//            result[ii] = ByteBuffer.wrap(integerBytes).getInt();
-//        }
-//        return result;
-//    }
 
     public static EnumSet<Status> getStatus(DscPointer dscPointer)throws ConnectorException{
         DSQuery query = new DSQuery();
