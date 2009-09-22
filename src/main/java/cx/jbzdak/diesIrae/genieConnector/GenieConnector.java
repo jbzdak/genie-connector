@@ -44,7 +44,7 @@ public class GenieConnector {
 
    private ConnectorState connectorState = ConnectorState.NOT_OPENED;
 
-   private FlushType flush = FlushType.AUTO_COMMIT;
+   private FlushType flush = FlushType.MANUAL;
 
    private DeviceType deviceType = DeviceType.MCA;
 
@@ -130,15 +130,7 @@ public class GenieConnector {
          @Override
          Void doCall() throws ConnectorException {
             LibraryConnector.controlDSC(dsc, deviceType, opCode);
-            if(opCode == OpCode.START_ACQUISITION){
-               setConnectorState(ConnectorState.ACQUIRING);
-            }
-            if(opCode == OpCode.ABORT_ACQUISITION){
-               setConnectorState(ConnectorState.OPEN);
-            }
-            if(opCode == OpCode.ABORT_ACQUISITION){
-               setLastResult(SpectrometricResult.getEmptyResult(startChannel, endChannel));
-            }
+
             return null;
          }
       });
@@ -300,8 +292,7 @@ public class GenieConnector {
       return connectorState;
    }
 
-   public void setConnectorState(ConnectorState connectorState) {
-      System.out.println("GenieConnector.setConnectorState(" +connectorState + ")");
+   void setConnectorState(ConnectorState connectorState) {
       ConnectorState oldConnectorState = this.connectorState;
       this.connectorState = connectorState;
       support.firePropertyChange("connectorState", oldConnectorState, this.connectorState);
@@ -331,22 +322,6 @@ public class GenieConnector {
       support.removePropertyChangeListener(listener);
    }
 
-   class CallWrapper{
-      public <T> T doCall(Call<T> call, Object... additionalInfo) throws GenieException{
-         try {
-            return call.doCall();
-         } catch (ConnectorException e) {
-            throw new GenieException(e.getCode(), dsc, additionalInfo);
-         }finally {
-            call.doFinally();
-         }
-      }
-   }
-
-   abstract class Call<T>{
-      abstract T doCall() throws ConnectorException;
-      void doFinally(){}
-   }
 
     private void updateState(){
        try {
@@ -361,7 +336,7 @@ public class GenieConnector {
        }
     }
 
-   private static class ConnectorStateWatcher extends Timer {
+class ConnectorStateWatcher extends Timer {
 
       Logger logger = Utils.getLogger();
 
@@ -380,7 +355,7 @@ public class GenieConnector {
       }
 
 
-      
+
       private class Task extends TimerTask {
 
          private final GenieConnector genieConnector;
@@ -396,34 +371,23 @@ public class GenieConnector {
          }
       }
    }
-}
 
-/**
- * Klasa robi całą magię potrzebna do wczytania biblioteki - czyli:
- * <p/>
- * Wczytuje <code>dll</code>a - dll powinien być w system32
- * <p/>
- * Ustawia mapowanie nazw funkcji (dodawanie przed FUNCTION_PREFIX)
- * <p/>
- * Woła GENIE_LIBRARY.vG2KEnv(), bo i tak kiedyś trzeba i trzeba raz to lepiej od razu.
- * <p/>
- * Ustawia Native#setProtected na true.
- *
- */
-class GenieMapperStaticMagic{
 
-   static final GenieLibrary GENIE_LIBRARY;
-   static{
-      GENIE_LIBRARY = (GenieLibrary)
-              Native.loadLibrary(GenieConnector.DLL_FILENAME, GenieLibrary.class, createLibOptions());
-      Native.setProtected(true);
-      GENIE_LIBRARY.vG2KEnv();
+   class CallWrapper{
+      public <T> T doCall(Call<T> call, Object... additionalInfo) throws GenieException{
+         try {
+            return call.doCall();
+         } catch (ConnectorException e) {
+            throw new GenieException(e.getCode(), dsc, additionalInfo);
+         }finally {
+            call.doFinally();
+         }
+      }
    }
 
-   private static Map<String,Object> createLibOptions(){
-      Map<String, Object> result = new HashMap<String, Object>();
-      result.put(Library.OPTION_FUNCTION_MAPPER, new Mapper());
-      return result;
+   private static abstract class Call<T>{
+      abstract T doCall() throws ConnectorException;
+      void doFinally(){}
    }
 }
 
@@ -433,10 +397,3 @@ class Mapper implements FunctionMapper{
       return GenieConnector.FUNCTION_PREFIX + method.getName();
    }
 }
-
-//class Mapper extends StdCallFunctionMapper{
-//    public String getFunctionName(NativeLibrary library, Method method) {
-//        System.out.println("" + GenieConnector.FUNCTION_PREFIX + super.getFunctionName(library, method));
-//        return GenieConnector.FUNCTION_PREFIX + super.getFunctionName(library, method);
-//    }
-//}
