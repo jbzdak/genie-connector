@@ -415,7 +415,7 @@ class GenieMapperStaticMagic{
    static final GenieLibrary GENIE_LIBRARY;
    static{
       GENIE_LIBRARY = (GenieLibrary)
-              Native.loadLibrary(GenieConnector.DLL_FILENAME, GenieLibrary.class,createLibOptions());
+              Native.loadLibrary(GenieConnector.DLL_FILENAME, GenieLibrary.class, createLibOptions());
       Native.setProtected(true);
       GENIE_LIBRARY.vG2KEnv();
    }
