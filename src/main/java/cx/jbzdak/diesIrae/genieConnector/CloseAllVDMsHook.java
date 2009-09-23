@@ -18,19 +18,19 @@ class CloseAllVDMsHook extends Thread{
         Runtime.getRuntime().addShutdownHook(HOOK);
     }
 
-    public static void registerConnector(GenieConnector connector){
+    public static void registerConnector(SimpleConnector connector){
         HOOK.openConnectors.add(connector);
     }
 
-    public static void deregisterConnector(GenieConnector connector){
+    public static void deregisterConnector(SimpleConnector connector){
         HOOK.openConnectors.remove(connector);
     }
 
-    private final Collection<GenieConnector> openConnectors = new ConcurrentLinkedQueue<GenieConnector>();
+    private final Collection<SimpleConnector> openConnectors = new ConcurrentLinkedQueue<SimpleConnector>();
     private static final Logger LOGGER = Utils.getLogger();
     @Override
     public void run() {
-        for(GenieConnector connector: openConnectors){
+        for(SimpleConnector connector: openConnectors){
             try {
                 connector.closeNoCheck();
             } catch (Throwable e) {

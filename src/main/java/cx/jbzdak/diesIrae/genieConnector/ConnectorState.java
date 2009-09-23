@@ -5,5 +5,5 @@ package cx.jbzdak.diesIrae.genieConnector;
 * User: Jacek Bzdak jbzdak@gmail.com
 */
 public enum ConnectorState {
-    NOT_OPENED, OPEN, ACQUIRING, CLOSED
+    NOT_OPENED, OPEN, CLOSED
 }

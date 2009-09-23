@@ -20,7 +20,7 @@ class LibraryConnector{
     /**
      * Tylko po to żeby się delegaty generowały same ;) do wywanenia
      */
-    private static final GenieLibrary GENIE_LIBRARY = GenieMapperStaticMagic.GENIE_LIBRARY;
+    private static final GenieLibrary GENIE_LIBRARY = GenieConnectorStaticData.GENIE_LIBRARY;
 
     /**
      * Maksymalna ilość kanałów które można przeczytać jednym wywołaniem SadGetSpectrometry
@@ -52,7 +52,7 @@ class LibraryConnector{
     static long getDetailedError(DscPointer dsc){
         NativeLongByReference details  = new NativeLongByReference();
         ShortByReference s1 = new ShortByReference(), s2 = new ShortByReference();
-        GenieMapperStaticMagic.GENIE_LIBRARY.SadGetStatus(dsc, details, s1, s2);
+        GenieConnectorStaticData.GENIE_LIBRARY.SadGetStatus(dsc, details, s1, s2);
         return details.getValue().longValue();
     }
 

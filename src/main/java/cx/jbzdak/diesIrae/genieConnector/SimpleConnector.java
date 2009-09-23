@@ -1,8 +1,316 @@
 package cx.jbzdak.diesIrae.genieConnector;
 
+import com.sun.jna.*;
+import com.sun.jna.ptr.PointerByReference;
+import cx.jbzdak.diesIrae.genieConnector.enums.*;
+import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
+import cx.jbzdak.diesIrae.genieConnector.structs.DSPresetTime;
+import org.apache.commons.collections.functors.CloneTransformer;
+import org.slf4j.Logger;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.*;
+
 /**
- * @author Jacek Bzdak jbzdak@gmail.com
- *         Date: 2009-09-22
+ * Created by IntelliJ IDEA.
+ * User: Jacek Bzdak jbzdak@gmail.com
  */
 public class SimpleConnector {
+   
+   protected final DscPointer dsc;
+
+   private ConnectorState connectorState = ConnectorState.NOT_OPENED;
+
+   private FlushType flush = FlushType.MANUAL;
+
+   private DeviceType deviceType = DeviceType.MCA;
+
+   private short startChannel = 1;
+
+   private short endChannel = 1;
+
+   private DSPreset preset;
+   
+   protected final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+   public SimpleConnector() {
+      PointerByReference dsc = new PointerByReference(Pointer.NULL);
+      try {
+         LibraryConnector.iUtlCreateFileDSC2(dsc);
+         CloseAllVDMsHook.registerConnector(this);
+      } catch (ConnectorException e) {
+         throw new GenieException("Error while opening VDM", e.getCode());
+      }
+      this.dsc = new DscPointer(dsc.getValue());
+   }
+
+   public void openFile(final File file, final EnumSet<OpenMode> mode){
+      assertMayOpen();
+      doCall(new Call<Void>(){
+         @Override
+         Void doCall() throws ConnectorException {
+            LibraryConnector.openDatasource(dsc,file.getAbsolutePath(), SourceType.FILE,  mode, false, "");
+            setConnectorState(ConnectorState.OPEN);
+            return null;
+         }
+      });
+   }
+
+   public void openSource(final String datasource, final EnumSet<OpenMode> mode, final SourceType type){
+      assertMayOpen();
+      doCall(new Call<Void>(){
+         @Override
+         Void doCall() throws ConnectorException {
+            LibraryConnector.openDatasource(dsc,datasource, type,  mode, false, "");
+            setConnectorState(ConnectorState.OPEN);
+            return null;
+         }
+      }, "datasource='" +datasource + "'", "mode='" + mode +"'");
+   }
+
+   public Set<Status> getStatus(){
+      return doCall(new Call<Set<Status>>() {
+         @Override
+         Set<Status> doCall() throws ConnectorException {
+            return LibraryConnector.getStatus(dsc);
+         }
+      });
+   }
+
+   public boolean isAcquiring(){
+      return  getStatus().contains(Status.BUSY);
+   }
+
+   public <T> T getParam(final Parameter<T> parameter, final int record, final int entry){
+      assertOpened();
+      return doCall(new Call<T>() {
+         @Override
+         public T doCall() throws ConnectorException {
+            return LibraryConnector.getParam(dsc, parameter, (short) record, (short) entry);
+         }
+      });
+   }
+
+   public <T> T getParam(final Parameter<T> parameter){
+      return  getParam(parameter, 0, 0);
+   }
+
+   public <T> void setParam(final Parameter<T> parameter, final T value, final int record, final int entry){
+      assertOpened();
+      doCall(new Call<Void>() {
+         @Override
+         public Void doCall() throws ConnectorException {
+            LibraryConnector.setParam(dsc, parameter, value, (short) record, (short) entry);
+            if(flush == FlushType.AUTO_COMMIT){
+               flush();
+            }
+            return null;
+         }
+      });
+   }
+
+   public void controlDSC(final OpCode opCode){
+      assertOpened();
+      doCall(new Call<Void>(){
+         @Override
+         Void doCall() throws ConnectorException {
+            LibraryConnector.controlDSC(dsc, deviceType, opCode);
+            return null;
+         }
+      });
+   }
+
+   public <T> void setParam(final Parameter<T> parameter, final T value){
+      setParam(parameter, value, 0, 0);
+   }
+
+   public void flush(){
+      doCall(new Call<Void>(){
+         @Override
+         Void doCall() throws ConnectorException {
+            LibraryConnector.flush(dsc);
+            return null;
+         }
+      });
+   }
+
+   SpectrometricResult getSpectrometricData(final int start, final int end){
+      return doCall(new Call<SpectrometricResult>() {
+         @Override
+         SpectrometricResult doCall() throws ConnectorException {
+            SpectrometricResult lastResult =  new SpectrometricResult((short) start, (short) end, LibraryConnector.getSpectralData(dsc, (short)start, (short)end));
+            //setLastResult(lastResult);
+            return lastResult;
+         }
+      }, "start= " + start, "end = " + end);
+   }
+
+   public void setSpectrometricData(final SpectrometricResult data){
+      doCall(new Call<Object>() {
+         @Override
+         Object doCall() throws ConnectorException {
+            LibraryConnector.putSpectrum(dsc, data);
+            return null;
+         }
+      }, "data = " + data);
+   }
+
+   public SpectrometricResult getSpectrometricData(){
+      return getSpectrometricData(startChannel, endChannel);
+   }
+
+   protected void closeNoCheck(){
+      doCall(new Call<Void>(){
+         @Override
+         Void doCall() throws ConnectorException {
+            if(getConnectorState() == ConnectorState.OPEN){
+               LibraryConnector.closeDataSource(dsc);
+            }
+            LibraryConnector.close(dsc);
+            CloseAllVDMsHook.deregisterConnector(SimpleConnector.this);
+            return null;
+         }
+         @Override
+         void doFinally() {
+            setConnectorState(ConnectorState.CLOSED);
+         }
+      });
+   }
+
+   public void close(){
+      if(getConnectorState() == ConnectorState.CLOSED){
+         throw new IllegalStateException();
+      }
+      closeNoCheck();
+   }
+
+   public DSPreset getPreset() {
+      return (DSPreset) CloneTransformer.getInstance().transform(preset);
+   }
+
+   public void setTimeout(double timeout){
+      DSPreset preset = new DSPreset();
+      DSPresetTime time = new DSPresetTime();
+      time.setTime(timeout);
+      preset.setDsPresetTime(time);
+      preset.setUlStartCh(new NativeLong(getStartChannel()));
+      preset.setUlStopCh(new NativeLong(getEndChannel()));
+      preset.setFlPsetMode(PresetMode.REAL);
+      setPreset(preset);
+   }
+
+   protected void setPreset(final DSPreset preset) {
+      assertOpened();
+      if(this.preset != preset){
+         this.preset = preset;
+         doCall(new Call<Object>() {
+            @Override
+            Object doCall() throws ConnectorException {
+               LibraryConnector.setPreset(dsc, preset);
+               return null;
+            }
+         }, "preset = " + preset);
+      }
+   }
+
+   public FlushType getFlush() {
+      return flush;
+   }
+
+   public void setFlush(FlushType flush) {
+      this.flush = flush;
+   }
+
+   public DeviceType getDeviceType() {
+      return deviceType;
+   }
+
+   public void setDeviceType(DeviceType deviceType) {
+      this.deviceType = deviceType;
+   }
+
+   public void setEndChannel(int endChannel) {
+      int oldEndChannel = this.endChannel;
+      this.endChannel = (short) endChannel;
+      support.firePropertyChange("endChannel", oldEndChannel, this.endChannel);
+   }
+
+   public int getEndChannel() {
+      return endChannel;
+   }
+
+   public void setStartChannel(int startChannel) {
+      int oldStartChannel = this.startChannel;
+      this.startChannel = (short) startChannel;
+      support.firePropertyChange("startChannel", oldStartChannel, this.startChannel);
+   }
+
+   public int getStartChannel() {
+      return startChannel;
+   }
+
+   protected void assertOpened(){
+      if(ConnectorState.OPEN != connectorState){
+         throw new IllegalStateException("Can't call this method on closed or uninitialized Connector");
+      }
+   }
+
+   protected void assertMayOpen(){
+      if(getConnectorState() != ConnectorState.NOT_OPENED){
+         throw new IllegalStateException("Can't call this method on opened Connector");
+      }
+   }
+
+   public ConnectorState getConnectorState() {
+      return connectorState;
+   }
+
+   void setConnectorState(ConnectorState connectorState) {
+      ConnectorState oldConnectorState = this.connectorState;
+      this.connectorState = connectorState;
+      support.firePropertyChange("connectorState", oldConnectorState, this.connectorState);
+   }
+
+   public void addPropertyChangeListener(PropertyChangeListener listener) {
+      support.addPropertyChangeListener(listener);
+   }
+
+   public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+      support.addPropertyChangeListener(propertyName, listener);
+   }
+
+   public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+      support.removePropertyChangeListener(propertyName, listener);
+   }
+
+   public boolean hasListeners(String propertyName) {
+      return support.hasListeners(propertyName);
+   }
+
+   public PropertyChangeListener[] getPropertyChangeListeners() {
+      return support.getPropertyChangeListeners();
+   }
+
+   public void removePropertyChangeListener(PropertyChangeListener listener) {
+      support.removePropertyChangeListener(listener);
+   }
+
+   public  <T> T doCall(Call<T> call, Object... additionalInfo) throws GenieException{
+      try {
+         return call.doCall();
+      } catch (ConnectorException e) {
+         throw new GenieException(e.getCode(), dsc, additionalInfo);
+      }finally {
+         call.doFinally();
+      }
+   }
+
+   private static abstract class Call<T>{
+      abstract T doCall() throws ConnectorException;
+      void doFinally(){}
+   }
 }
