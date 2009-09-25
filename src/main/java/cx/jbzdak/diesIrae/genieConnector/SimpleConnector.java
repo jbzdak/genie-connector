@@ -1,19 +1,19 @@
 package cx.jbzdak.diesIrae.genieConnector;
 
-import com.sun.jna.*;
+import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 import cx.jbzdak.diesIrae.genieConnector.enums.*;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPresetTime;
 import org.apache.commons.collections.functors.CloneTransformer;
-import org.slf4j.Logger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -40,7 +40,7 @@ public class SimpleConnector {
    public SimpleConnector() {
       PointerByReference dsc = new PointerByReference(Pointer.NULL);
       try {
-         LibraryConnector.iUtlCreateFileDSC2(dsc);
+         LibraryWrapper.iUtlCreateFileDSC2(dsc);
          CloseAllVDMsHook.registerConnector(this);
       } catch (ConnectorException e) {
          throw new GenieException("Error while opening VDM", e.getCode());
@@ -53,7 +53,7 @@ public class SimpleConnector {
       doCall(new Call<Void>(){
          @Override
          Void doCall() throws ConnectorException {
-            LibraryConnector.openDatasource(dsc,file.getAbsolutePath(), SourceType.FILE,  mode, false, "");
+            LibraryWrapper.openDatasource(dsc,file.getAbsolutePath(), SourceType.FILE,  mode, false, "");
             setConnectorState(ConnectorState.OPEN);
             return null;
          }
@@ -65,7 +65,7 @@ public class SimpleConnector {
       doCall(new Call<Void>(){
          @Override
          Void doCall() throws ConnectorException {
-            LibraryConnector.openDatasource(dsc,datasource, type,  mode, false, "");
+            LibraryWrapper.openDatasource(dsc,datasource, type,  mode, false, "");
             setConnectorState(ConnectorState.OPEN);
             return null;
          }
@@ -76,11 +76,17 @@ public class SimpleConnector {
       return doCall(new Call<Set<Status>>() {
          @Override
          Set<Status> doCall() throws ConnectorException {
-            return LibraryConnector.getStatus(dsc);
+            return LibraryWrapper.getStatus(dsc);
          }
       });
    }
 
+   /**
+    * Check whether detector is currently acquiring data.
+    * This is a helper method it is equivalent of
+    * <code>getStatus().contains(Status.BUSY)</code>.
+    * @return true if detector is acquiring data
+    */
    public boolean isAcquiring(){
       return  getStatus().contains(Status.BUSY);
    }
@@ -90,7 +96,7 @@ public class SimpleConnector {
       return doCall(new Call<T>() {
          @Override
          public T doCall() throws ConnectorException {
-            return LibraryConnector.getParam(dsc, parameter, (short) record, (short) entry);
+            return LibraryWrapper.getParam(dsc, parameter, (short) record, (short) entry);
          }
       });
    }
@@ -104,7 +110,7 @@ public class SimpleConnector {
       doCall(new Call<Void>() {
          @Override
          public Void doCall() throws ConnectorException {
-            LibraryConnector.setParam(dsc, parameter, value, (short) record, (short) entry);
+            LibraryWrapper.setParam(dsc, parameter, value, (short) record, (short) entry);
             if(flush == FlushType.AUTO_COMMIT){
                flush();
             }
@@ -118,7 +124,7 @@ public class SimpleConnector {
       doCall(new Call<Void>(){
          @Override
          Void doCall() throws ConnectorException {
-            LibraryConnector.controlDSC(dsc, deviceType, opCode);
+            LibraryWrapper.controlDSC(dsc, deviceType, opCode);
             return null;
          }
       });
@@ -132,7 +138,7 @@ public class SimpleConnector {
       doCall(new Call<Void>(){
          @Override
          Void doCall() throws ConnectorException {
-            LibraryConnector.flush(dsc);
+            LibraryWrapper.flush(dsc);
             return null;
          }
       });
@@ -142,7 +148,7 @@ public class SimpleConnector {
       return doCall(new Call<SpectrometricResult>() {
          @Override
          SpectrometricResult doCall() throws ConnectorException {
-            SpectrometricResult lastResult =  new SpectrometricResult((short) start, (short) end, LibraryConnector.getSpectralData(dsc, (short)start, (short)end));
+            SpectrometricResult lastResult =  new SpectrometricResult((short) start, (short) end, LibraryWrapper.getSpectralData(dsc, (short)start, (short)end));
             //setLastResult(lastResult);
             return lastResult;
          }
@@ -153,7 +159,7 @@ public class SimpleConnector {
       doCall(new Call<Object>() {
          @Override
          Object doCall() throws ConnectorException {
-            LibraryConnector.putSpectrum(dsc, data);
+            LibraryWrapper.putSpectrum(dsc, data);
             return null;
          }
       }, "data = " + data);
@@ -168,9 +174,9 @@ public class SimpleConnector {
          @Override
          Void doCall() throws ConnectorException {
             if(getConnectorState() == ConnectorState.OPEN){
-               LibraryConnector.closeDataSource(dsc);
+               LibraryWrapper.closeDataSource(dsc);
             }
-            LibraryConnector.close(dsc);
+            LibraryWrapper.close(dsc);
             CloseAllVDMsHook.deregisterConnector(SimpleConnector.this);
             return null;
          }
@@ -192,7 +198,7 @@ public class SimpleConnector {
       return (DSPreset) CloneTransformer.getInstance().transform(preset);
    }
 
-   public void setTimeout(double timeout){
+   public void setLiveTime(double timeout){
       DSPreset preset = new DSPreset();
       DSPresetTime time = new DSPresetTime();
       time.setTime(timeout);
@@ -210,7 +216,7 @@ public class SimpleConnector {
          doCall(new Call<Object>() {
             @Override
             Object doCall() throws ConnectorException {
-               LibraryConnector.setPreset(dsc, preset);
+               LibraryWrapper.setPreset(dsc, preset);
                return null;
             }
          }, "preset = " + preset);

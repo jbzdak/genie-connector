@@ -15,7 +15,7 @@ import java.nio.IntBuffer;
 import java.util.EnumSet;
 
 @SuppressWarnings({"StaticMethodOnlyUsedInOneClass"})
-class LibraryConnector{
+class LibraryWrapper {
 
     /**
      * Tylko po to żeby się delegaty generowały same ;) do wywanenia

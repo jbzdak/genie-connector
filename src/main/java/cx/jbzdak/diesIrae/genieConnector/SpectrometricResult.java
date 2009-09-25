@@ -34,11 +34,12 @@ public class SpectrometricResult {
     public short getSize(){
       return (short)(endChannel - startChannel);  
     }
-    public IntBuffer getContents() {
+
+    IntBuffer getContents() {
         return contents.asReadOnlyBuffer();
     }
 
-   public RegionOfInterest getRoi(int roiStartChannel, int roiEndChannel){
+   public RegionOfInterest createRoi(int roiStartChannel, int roiEndChannel){
       return new RegionOfInterest((short)roiStartChannel, (short)roiEndChannel, this);      
    }
 

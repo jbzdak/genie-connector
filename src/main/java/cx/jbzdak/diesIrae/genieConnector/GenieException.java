@@ -26,7 +26,7 @@ public class GenieException extends RuntimeException{
    GenieException(String message, int errorCode, DscPointer dsc) {
       super(message);
       this.errorCode = errorCode;
-      detailedErrorCode = LibraryConnector.getDetailedError(dsc);
+      detailedErrorCode = LibraryWrapper.getDetailedError(dsc);
       errorDescription = new ErrorDescription(detailedErrorCode);
       this.additionalInfo = new Object[0];
    }
@@ -34,7 +34,7 @@ public class GenieException extends RuntimeException{
    GenieException(int errorCode, DscPointer dsc, Object... additionalInfo) {
       super();
       this.errorCode = errorCode;
-      detailedErrorCode = LibraryConnector.getDetailedError(dsc);
+      detailedErrorCode = LibraryWrapper.getDetailedError(dsc);
       errorDescription = new ErrorDescription(detailedErrorCode);
       this.additionalInfo =  additionalInfo;
    }

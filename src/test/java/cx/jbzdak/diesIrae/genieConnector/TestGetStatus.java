@@ -38,7 +38,7 @@ public class TestGetStatus {
         Field f = GenieConnector.class.getDeclaredField("dsc");
         f.setAccessible(true);
         DscPointer pointer =(DscPointer) f.get(connector);
-        LibraryConnector.getDetailedError(pointer);
+        LibraryWrapper.getDetailedError(pointer);
     }
     
 }
