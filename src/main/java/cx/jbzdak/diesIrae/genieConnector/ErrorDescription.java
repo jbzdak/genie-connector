@@ -24,6 +24,7 @@ public class ErrorDescription {
         detailedMessages.put(0xfff7, "Wywołanie niepoprawnej operacji -- nie wiem na pewno, zgaduje -- ten błąd pojawia się jak" +
                 " wywoła się start akwizycji danych na pliku z zapisanymi pomiarami");
         detailedMessages.put(0xfff4, "Network configuration file error");
+       detailedMessages.put(0x22, "Busy but never opened. . . Just reset the god damn hardware!");
     }
 
     private final Long originalErrorCode;

@@ -1,26 +1,12 @@
 package cx.jbzdak.diesIrae.genieConnector;
 
-import com.sun.jna.*;
-import com.sun.jna.ptr.PointerByReference;
-import cx.jbzdak.diesIrae.genieConnector.enums.*;
-import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
-import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
-import cx.jbzdak.diesIrae.genieConnector.structs.DSPresetTime;
-import org.apache.commons.collections.functors.CloneTransformer;
-import org.slf4j.Logger;
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import net.jcip.annotations.ThreadSafe;
-import net.jcip.annotations.GuardedBy;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,7 +25,7 @@ public class GenieConnector  extends SimpleConnector{
 
    private long refreshTime = 1000;
 
-   private boolean updateResults;
+   private boolean updateResults = true;
 
    public GenieConnector() {
       task = CONNECTOR_STATE_WATCHER.registerConnector(this);
