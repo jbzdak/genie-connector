@@ -22,8 +22,18 @@
     <scm>
         <connection>git://github.com/jbzdak/genie-connector.git</connection>
         <url>http://github.com/jbzdak/genie-connector</url>
-        <tag></tag>
+        <tag>master</tag>
     </scm>
+    <licenses>
+        <license>
+            <name>GNU GPL 3 or never</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+            <comments>
+                With exception that you may link it to a Genie 2000 library (and distribute such code). 
+                If you need another license send me an email, and I think it can be arranged.
+            </comments>
+        </license>
+    </licenses>
     <dependencies>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
