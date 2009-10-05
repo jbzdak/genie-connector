@@ -4,6 +4,9 @@
   ~ Canberra Genie 2000 library
   ~ Copyright (C) 2009 Jacek Bzdak jbzdak@gmail.com
   ~
+  ~ This program was written for my BA in Faculty of Physics of
+  ~ Warsaw University of Technology.
+  ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
   ~ the Free Software Foundation, either version 3 of the License, or
@@ -48,11 +51,19 @@
             <name>GNU GPL 3 or never</name>
             <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
             <comments>
-                With exception that you may link it to a Genie 2000 library (and distribute such code). 
+                With exception that you may link it to a Genie 2000 library (and distribute such code).
                 If you need another license send me an email, and I think it can be arranged.
             </comments>
         </license>
     </licenses>
+    <distributionManagement>
+        <repository>
+            <name>Jacek Bzdak repo</name>
+            <id>jbrepo</id>
+            <url>scpexe://skimbleshanks.ath.cx/opt/sonatype-work/nexus/storage/public</url>
+            <uniqueVersion>true</uniqueVersion>
+        </repository>
+    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -76,9 +87,9 @@
             <version>1.5.0</version>
         </dependency>
         <dependency>
-            <groupId>net.sourceforge.findbugs</groupId>
+            <groupId>edu.umd.cs.findbugs</groupId>
             <artifactId>annotations</artifactId>
-            <version>1.3.2</version>
+            <version>1.3.9</version>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
@@ -100,24 +111,19 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>1.0-alpha-5</version>
+            </extension>
+        </extensions>
     </build>
     <repositories>
         <repository>
             <id>skimble-public</id>
             <url>http://skimbleshanks.ath.cx/maven2/</url>
             <!-- Prywatne repozytorium autora -->
-        </repository>
-        <repository>
-            <id>jboss-repo</id>
-            <url>http://repository.jboss.com/maven2/</url>
-        </repository>
-        <repository>
-            <id>ibidio</id>
-            <url>http://www.ibiblio.org/maven2</url>
-        </repository>
-        <repository>
-            <id>http://download.java.net/maven/2/</id>
-            <url>http://download.java.net/maven/2</url>
         </repository>
     </repositories>
 </project>
