@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>dies-irae</artifactId>
-        <groupId>dies-irae</groupId>
-        <version>1.0</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>dies-irae</groupId>
-    <artifactId>genie-connector</artifactId>
+    <groupId>cx.ath.jbzdak</groupId>
+    <artifactId>genieConnector</artifactId>
     <version>1.0</version>
+    <name>Genie connector</name>
+    <developers>
+        <developer>
+            <name>Jacek Bzdak</name>
+            <email>jbzdak@gmail.com</email>
+            <roles>
+                <role>Everything</role>
+            </roles>
+        </developer>
+    </developers>
+    <issueManagement>
+        <system>fogbugz</system>
+        <url>https://jbsoftware.fogbugz.com/default.asp?pg=pgPublicEdit</url>
+    </issueManagement>
+    <scm>
+        <connection>git://github.com/jbzdak/genie-connector.git</connection>
+        <url>http://github.com/jbzdak/genie-connector</url>
+        <tag></tag>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -19,22 +33,62 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.5</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
+            <version>2.4</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <version>1.5.0</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.findbugs</groupId>
             <artifactId>annotations</artifactId>
+            <version>1.3.2</version>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-        </dependency>             
+            <version>3.2.1</version>
+        </dependency>
     </dependencies>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <repositories>
+        <repository>
+            <id>skimble-public</id>
+            <url>http://skimbleshanks.ath.cx/maven2/</url>
+            <!-- Prywatne repozytorium autora -->
+        </repository>
+        <repository>
+            <id>jboss-repo</id>
+            <url>http://repository.jboss.com/maven2/</url>
+        </repository>
+        <repository>
+            <id>ibidio</id>
+            <url>http://www.ibiblio.org/maven2</url>
+        </repository>
+        <repository>
+            <id>http://download.java.net/maven/2/</id>
+            <url>http://download.java.net/maven/2</url>
+        </repository>
+    </repositories>
 </project>
