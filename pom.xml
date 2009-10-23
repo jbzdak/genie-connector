@@ -61,9 +61,14 @@
         <repository>
             <name>Jacek Bzdak repo</name>
             <id>jbrepo</id>
-            <url>scpexe://skimbleshanks.ath.cx/opt/sonatype-work/nexus/storage/public</url>
-            <uniqueVersion>true</uniqueVersion>
+            <url>scpexe://skimbleshanks.ath.cx/opt/sonatype-work/nexus/storage/releases</url>
         </repository>
+        <snapshotRepository>
+            <name>Jacek Bzdak Snapshoot  repo</name>
+            <id>jbrepo-snap</id>
+            <url>scpexe://skimbleshanks.ath.cx/opt/sonatype-work/nexus/storage/public-snapshot/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
     </distributionManagement>
     <dependencies>
         <dependency>

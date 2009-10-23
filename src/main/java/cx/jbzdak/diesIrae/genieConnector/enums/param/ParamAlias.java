@@ -37,6 +37,11 @@ public class ParamAlias<T> implements Parameter<T>{
 
     public static final ParamAlias<Long> CHANNEL_NUMBER = new ParamAlias<Long>(Parameters.L_CHANNELS);
 
+   /**
+    * Steruje koincydencją. Jeśli ma wartość 0 to koincydencja jest wyłączona, jeśli 1 włączona. 
+    */
+    public static final ParamAlias<Long> COINCIDENCE_MODE = new ParamAlias<Long>(Parameters.L_ADCFANTIC);
+
     private final ParamImpl internal;
 
     ParamAlias(ParamImpl internal) {
