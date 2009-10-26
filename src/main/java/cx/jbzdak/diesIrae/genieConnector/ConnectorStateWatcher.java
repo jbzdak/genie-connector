@@ -5,8 +5,8 @@ import java.util.TimerTask;
 
 class ConnectorStateWatcher extends Timer {
 
-   public Task registerConnector(GenieConnector connector){
-      Task task= new Task(connector);
+   public Task registerConnector(GenieConnector connector) {
+      Task task = new Task(connector);
       scheduleAtFixedRate(task, 0, connector.getRefreshTime());
       return task;
    }
@@ -22,7 +22,7 @@ class ConnectorStateWatcher extends Timer {
       @Override
       public void run() {
          genieConnector.updateState();
-         if(genieConnector.isUpdateResults()){
+         if (genieConnector.isUpdateResults()) {
             genieConnector.updateLastResult();
          }
       }

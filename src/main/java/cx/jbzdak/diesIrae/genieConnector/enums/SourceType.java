@@ -27,12 +27,12 @@ package cx.jbzdak.diesIrae.genieConnector.enums;
  * User: Jacek Bzdak jbzdak@gmail.com
  */
 public enum SourceType {
-    FILE(1), DETECTOR(0x301);
+   FILE(1), DETECTOR(0x301);
 
-    private SourceType(int value) {
-        this.value = (short) value;
-    }
+   private SourceType(int value) {
+      this.value = (short) value;
+   }
 
-    public final short value;
+   public final short value;
 
 }

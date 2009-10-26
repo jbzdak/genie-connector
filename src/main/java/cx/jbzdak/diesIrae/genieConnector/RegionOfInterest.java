@@ -30,41 +30,43 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 public class RegionOfInterest {
 
-    private final short startChannel;
-    private final short endChannel;
-    private final SpectrometricResult internal;
+   private final short startChannel;
 
-    public RegionOfInterest(short startChannel, short endChannel, SpectrometricResult internal) {
-        this.startChannel = startChannel;
-        this.endChannel = endChannel;
-        this.internal = internal;
-    }
+   private final short endChannel;
 
-    public short getStartChannel() {
-        return startChannel;
-    }
+   private final SpectrometricResult internal;
 
-    public short getEndChannel() {
-        return endChannel;
-    }
+   public RegionOfInterest(short startChannel, short endChannel, SpectrometricResult internal) {
+      this.startChannel = startChannel;
+      this.endChannel = endChannel;
+      this.internal = internal;
+   }
 
-    public SpectrometricResult getInternal() {
-        return internal;
-    }
+   public short getStartChannel() {
+      return startChannel;
+   }
 
-    public int getCountForChannel(int channelNum) {
-        if(channelNum<startChannel || channelNum>endChannel){
-            throw new IllegalArgumentException("Pobrano punkty spoza ROI za pośrednictwem ROI");
-        }
-        return internal.getCountForChannel(channelNum);
-    }
+   public short getEndChannel() {
+      return endChannel;
+   }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).
-                append("startChannel", startChannel).
-                append("endChannel", endChannel).
-                append("internal", internal).
-                toString();
-    }
+   public SpectrometricResult getInternal() {
+      return internal;
+   }
+
+   public int getCountForChannel(int channelNum) {
+      if (channelNum < startChannel || channelNum > endChannel) {
+         throw new IllegalArgumentException("Pobrano punkty spoza ROI za pośrednictwem ROI");
+      }
+      return internal.getCountForChannel(channelNum);
+   }
+
+   @Override
+   public String toString() {
+      return new ToStringBuilder(this).
+              append("startChannel", startChannel).
+              append("endChannel", endChannel).
+              append("internal", internal).
+              toString();
+   }
 }

@@ -31,40 +31,40 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  */
 class ParamImpl<T> implements Parameter<T> {
 
-    @NonNull
-    private final ParameterType<T> type;
+   @NonNull
+   private final ParameterType<T> type;
 
-    @NonNull
-    private final long paramId;
+   @NonNull
+   private final long paramId;
 
-    @NonNull
-    private final String name;
+   @NonNull
+   private final String name;
 
-    ParamImpl(char type, long paramId, String name) {
-        this.type = (ParameterType<T>) ParameterType.getType(type);
-        if (this.type == null) {
-            throw new NullPointerException();
-        }
-        this.paramId = paramId;
-        this.name = name;
-    }
+   ParamImpl(char type, long paramId, String name) {
+      this.type = (ParameterType<T>) ParameterType.getType(type);
+      if (this.type == null) {
+         throw new NullPointerException();
+      }
+      this.paramId = paramId;
+      this.name = name;
+   }
 
-    @NonNull
-    public short getByteLenght() {
-        return type.getByteLenght(name);
-    }
+   @NonNull
+   public short getByteLenght() {
+      return type.getByteLenght(name);
+   }
 
-    @NonNull
-    public ParameterType<T> getType() {
-        return type;
-    }
+   @NonNull
+   public ParameterType<T> getType() {
+      return type;
+   }
 
-    @NonNull
-    public long getParamId() {
-        return paramId;
-    }
-    
-    //All params (evil!)
+   @NonNull
+   public long getParamId() {
+      return paramId;
+   }
+
+   //All params (evil!)
 
 }
 

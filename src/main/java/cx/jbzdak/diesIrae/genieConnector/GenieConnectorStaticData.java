@@ -38,7 +38,6 @@ import java.util.Map;
  * Woła GENIE_LIBRARY.vG2KEnv(), bo i tak kiedyś trzeba i trzeba raz to lepiej od razu.
  * <p/>
  * Ustawia Native#setProtected na true.
- *
  */
 class GenieConnectorStaticData {
 
@@ -53,14 +52,15 @@ class GenieConnectorStaticData {
    static final String FUNCTION_PREFIX = "DLL_WRAPPER_";
 
    static final GenieLibrary GENIE_LIBRARY;
-   static{
+
+   static {
       GENIE_LIBRARY = (GenieLibrary)
               Native.loadLibrary(DLL_FILENAME, GenieLibrary.class, createLibOptions());
       Native.setProtected(true);
       GENIE_LIBRARY.vG2KEnv();
    }
 
-   private static Map<String,Object> createLibOptions(){
+   private static Map<String, Object> createLibOptions() {
       Map<String, Object> result = new HashMap<String, Object>();
       result.put(Library.OPTION_FUNCTION_MAPPER, new GenieFunctionMapper());
       return result;

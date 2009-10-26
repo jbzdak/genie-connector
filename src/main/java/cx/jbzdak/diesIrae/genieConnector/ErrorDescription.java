@@ -35,72 +35,72 @@ import java.util.Map;
  * User: Jacek Bzdak jbzdak@gmail.com
  */
 @SuppressWarnings({"MagicNumber"})
-public class ErrorDescription {  
+public class ErrorDescription {
 
-    private static final Map<Integer, String> detailedMessages =
-            Collections.synchronizedMap(DefaultedMap.decorate(new HashMap(),"Nie określono wiadomości szczegółowej"));
+   private static final Map<Integer, String> detailedMessages =
+           Collections.synchronizedMap(DefaultedMap.decorate(new HashMap(), "Nie określono wiadomości szczegółowej"));
 
-    static{
-        detailedMessages.put(0xfffd, "Ogólny błąd połączenia z VDM");
-        detailedMessages.put(0x8e2a, "Plik otwarty przez inny program i nie można się nim podzielić ;)");
-        detailedMessages.put(0xfff7, "Wywołanie niepoprawnej operacji -- nie wiem na pewno, zgaduje -- ten błąd pojawia się jak" +
-                " wywoła się start akwizycji danych na pliku z zapisanymi pomiarami");
-        detailedMessages.put(0xfff4, "Network configuration file error");
-       detailedMessages.put(0x22, "Busy but never opened. . . Just reset the god damn hardware!");
-    }
+   static {
+      detailedMessages.put(0xfffd, "Ogólny błąd połączenia z VDM");
+      detailedMessages.put(0x8e2a, "Plik otwarty przez inny program i nie można się nim podzielić ;)");
+      detailedMessages.put(0xfff7, "Wywołanie niepoprawnej operacji -- nie wiem na pewno, zgaduje -- ten błąd pojawia się jak" +
+              " wywoła się start akwizycji danych na pliku z zapisanymi pomiarami");
+      detailedMessages.put(0xfff4, "Network configuration file error");
+      detailedMessages.put(0x22, "Busy but never opened. . . Just reset the god damn hardware!");
+   }
 
-    private final Long originalErrorCode;
+   private final Long originalErrorCode;
 
-    private final ErrorClass errorClass;
+   private final ErrorClass errorClass;
 
-    private final ErrorLevel errorLevel;
+   private final ErrorLevel errorLevel;
 
-    private final Integer specificErrorCode;
+   private final Integer specificErrorCode;
 
-    public ErrorDescription(Long originalErrorCode) {
-        this.originalErrorCode = originalErrorCode;
-        long specificCodeMask = (long)( Math.pow(2,16)) - 1L;
-        //System.out.println(" "  + Long.toBinaryString(specificCodeMask));
-        specificErrorCode = (int)(originalErrorCode & specificCodeMask);
-        //.out.println(" "  + Long.toBinaryString(originalErrorCode));
-        originalErrorCode >>= 16;
-        //System.out.println(" "  + Long.toBinaryString(originalErrorCode));
-        specificCodeMask = 7;
-        errorClass = ErrorClass.getClass((byte)(originalErrorCode & specificCodeMask));
-        //System.out.println(" "  + Long.toBinaryString(originalErrorCode));
-        originalErrorCode >>= 4;
-        specificCodeMask = 255;
-        errorLevel = ErrorLevel.getLevel((byte)(originalErrorCode & specificCodeMask));
-    }
+   public ErrorDescription(Long originalErrorCode) {
+      this.originalErrorCode = originalErrorCode;
+      long specificCodeMask = (long) (Math.pow(2, 16)) - 1L;
+      //System.out.println(" "  + Long.toBinaryString(specificCodeMask));
+      specificErrorCode = (int) (originalErrorCode & specificCodeMask);
+      //.out.println(" "  + Long.toBinaryString(originalErrorCode));
+      originalErrorCode >>= 16;
+      //System.out.println(" "  + Long.toBinaryString(originalErrorCode));
+      specificCodeMask = 7;
+      errorClass = ErrorClass.getClass((byte) (originalErrorCode & specificCodeMask));
+      //System.out.println(" "  + Long.toBinaryString(originalErrorCode));
+      originalErrorCode >>= 4;
+      specificCodeMask = 255;
+      errorLevel = ErrorLevel.getLevel((byte) (originalErrorCode & specificCodeMask));
+   }
 
-    public Long getOriginalErrorCode() {
-        return originalErrorCode;
-    }
+   public Long getOriginalErrorCode() {
+      return originalErrorCode;
+   }
 
-    public ErrorClass getErrorClass() {
-        return errorClass;
-    }
+   public ErrorClass getErrorClass() {
+      return errorClass;
+   }
 
-    public ErrorLevel getErrorLevel() {
-        return errorLevel;
-    }
+   public ErrorLevel getErrorLevel() {
+      return errorLevel;
+   }
 
-    public Integer getSpecificErrorCode() {
-        return specificErrorCode;
-    }
+   public Integer getSpecificErrorCode() {
+      return specificErrorCode;
+   }
 
-    public String getDetailedMessage(){
-        return detailedMessages.get(getSpecificErrorCode());
-    }
+   public String getDetailedMessage() {
+      return detailedMessages.get(getSpecificErrorCode());
+   }
 
-    @Override
-    public String toString() {
-        return "ErrorDescription{" +
-                "originalErrorCode=" + originalErrorCode +
-                ", errorClass=" + errorClass +
-                ", errorLevel=" + errorLevel +
-                ", detailedMessage=" + getDetailedMessage() +
-                ", specificErrorCode=" + Integer.toHexString(specificErrorCode) +
-                '}';
-    }
+   @Override
+   public String toString() {
+      return "ErrorDescription{" +
+              "originalErrorCode=" + originalErrorCode +
+              ", errorClass=" + errorClass +
+              ", errorLevel=" + errorLevel +
+              ", detailedMessage=" + getDetailedMessage() +
+              ", specificErrorCode=" + Integer.toHexString(specificErrorCode) +
+              '}';
+   }
 }

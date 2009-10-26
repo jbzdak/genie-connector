@@ -42,7 +42,7 @@ import java.util.Set;
  * User: Jacek Bzdak jbzdak@gmail.com
  */
 public class SimpleConnector {
-   
+
    protected final DscPointer dsc;
 
    private ConnectorState connectorState = ConnectorState.NOT_OPENED;
@@ -56,7 +56,7 @@ public class SimpleConnector {
    private short endChannel = 1;
 
    private DSPreset preset;
-   
+
    protected final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
    public SimpleConnector() {
@@ -70,34 +70,31 @@ public class SimpleConnector {
       this.dsc = new DscPointer(dsc.getValue());
    }
 
-   public void openFile(final File file, final EnumSet<OpenMode> mode){
+   public void openFile(final File file, final EnumSet<OpenMode> mode) {
       assertMayOpen();
-      doCall(new Call<Void>(){
-         @Override
-         Void doCall() throws ConnectorException {
-            LibraryWrapper.openDatasource(dsc,file.getAbsolutePath(), SourceType.FILE,  mode, false, "");
+      doCall(new Call<Void>() {
+         @Override Void doCall() throws ConnectorException {
+            LibraryWrapper.openDatasource(dsc, file.getAbsolutePath(), SourceType.FILE, mode, false, "");
             setConnectorState(ConnectorState.OPEN);
             return null;
          }
       });
    }
 
-   public void openSource(final String datasource, final EnumSet<OpenMode> mode, final SourceType type){
+   public void openSource(final String datasource, final EnumSet<OpenMode> mode, final SourceType type) {
       assertMayOpen();
-      doCall(new Call<Void>(){
-         @Override
-         Void doCall() throws ConnectorException {
-            LibraryWrapper.openDatasource(dsc,datasource, type,  mode, false, "");
+      doCall(new Call<Void>() {
+         @Override Void doCall() throws ConnectorException {
+            LibraryWrapper.openDatasource(dsc, datasource, type, mode, false, "");
             setConnectorState(ConnectorState.OPEN);
             return null;
          }
-      }, "datasource='" +datasource + "'", "mode='" + mode +"'");
+      }, "datasource='" + datasource + "'", "mode='" + mode + "'");
    }
 
-   public Set<Status> getStatus(){
+   public Set<Status> getStatus() {
       return doCall(new Call<Set<Status>>() {
-         @Override
-         Set<Status> doCall() throws ConnectorException {
+         @Override Set<Status> doCall() throws ConnectorException {
             return LibraryWrapper.getStatus(dsc);
          }
       });
@@ -107,13 +104,14 @@ public class SimpleConnector {
     * Check whether detector is currently acquiring data.
     * This is a helper method it is equivalent of
     * <code>getStatus().contains(Status.BUSY)</code>.
+    *
     * @return true if detector is acquiring data
     */
-   public boolean isAcquiring(){
-      return  getStatus().contains(Status.BUSY);
+   public boolean isAcquiring() {
+      return getStatus().contains(Status.BUSY);
    }
 
-   public <T> T getParam(final Parameter<T> parameter, final int record, final int entry){
+   public <T> T getParam(final Parameter<T> parameter, final int record, final int entry) {
       assertOpened();
       return doCall(new Call<T>() {
          @Override
@@ -123,17 +121,17 @@ public class SimpleConnector {
       });
    }
 
-   public <T> T getParam(final Parameter<T> parameter){
-      return  getParam(parameter, 0, 0);
+   public <T> T getParam(final Parameter<T> parameter) {
+      return getParam(parameter, 0, 0);
    }
 
-   public <T> void setParam(final Parameter<T> parameter, final T value, final int record, final int entry){
+   public <T> void setParam(final Parameter<T> parameter, final T value, final int record, final int entry) {
       assertOpened();
       doCall(new Call<Void>() {
          @Override
          public Void doCall() throws ConnectorException {
             LibraryWrapper.setParam(dsc, parameter, value, (short) record, (short) entry);
-            if(flush == FlushType.AUTO_COMMIT){
+            if (flush == FlushType.AUTO_COMMIT) {
                flush();
             }
             return null;
@@ -141,76 +139,71 @@ public class SimpleConnector {
       });
    }
 
-   public void controlDSC(final OpCode opCode){
+   public void controlDSC(final OpCode opCode) {
       assertOpened();
-      doCall(new Call<Void>(){
-         @Override
-         Void doCall() throws ConnectorException {
+      doCall(new Call<Void>() {
+         @Override Void doCall() throws ConnectorException {
             LibraryWrapper.controlDSC(dsc, deviceType, opCode);
             return null;
          }
       });
    }
 
-   public <T> void setParam(final Parameter<T> parameter, final T value){
+   public <T> void setParam(final Parameter<T> parameter, final T value) {
       setParam(parameter, value, 0, 0);
    }
 
-   public void flush(){
-      doCall(new Call<Void>(){
-         @Override
-         Void doCall() throws ConnectorException {
+   public void flush() {
+      doCall(new Call<Void>() {
+         @Override Void doCall() throws ConnectorException {
             LibraryWrapper.flush(dsc);
             return null;
          }
       });
    }
 
-   SpectrometricResult getSpectrometricData(final int start, final int end){
+   SpectrometricResult getSpectrometricData(final int start, final int end) {
       return doCall(new Call<SpectrometricResult>() {
-         @Override
-         SpectrometricResult doCall() throws ConnectorException {
-            SpectrometricResult lastResult =  new SpectrometricResult((short) start, (short) end, LibraryWrapper.getSpectralData(dsc, (short)start, (short)end));
+         @Override SpectrometricResult doCall() throws ConnectorException {
+            SpectrometricResult lastResult = new SpectrometricResult((short) start, (short) end, LibraryWrapper.getSpectralData(dsc, (short) start, (short) end));
             //setLastResult(lastResult);
             return lastResult;
          }
       }, "start= " + start, "end = " + end);
    }
 
-   public void setSpectrometricData(final SpectrometricResult data){
+   public void setSpectrometricData(final SpectrometricResult data) {
       doCall(new Call<Object>() {
-         @Override
-         Object doCall() throws ConnectorException {
+         @Override Object doCall() throws ConnectorException {
             LibraryWrapper.putSpectrum(dsc, data);
             return null;
          }
       }, "data = " + data);
    }
 
-   public SpectrometricResult getSpectrometricData(){
+   public SpectrometricResult getSpectrometricData() {
       return getSpectrometricData(startChannel, endChannel);
    }
 
-   protected void closeNoCheck(){
-      doCall(new Call<Void>(){
-         @Override
-         Void doCall() throws ConnectorException {
-            if(getConnectorState() == ConnectorState.OPEN){
+   protected void closeNoCheck() {
+      doCall(new Call<Void>() {
+         @Override Void doCall() throws ConnectorException {
+            if (getConnectorState() == ConnectorState.OPEN) {
                LibraryWrapper.closeDataSource(dsc);
             }
             LibraryWrapper.close(dsc);
             CloseAllVDMsHook.deregisterConnector(SimpleConnector.this);
             return null;
          }
-         @Override
-         void doFinally() {
+
+         @Override void doFinally() {
             setConnectorState(ConnectorState.CLOSED);
          }
       });
    }
 
-   public void close(){
-      if(getConnectorState() == ConnectorState.CLOSED){
+   public void close() {
+      if (getConnectorState() == ConnectorState.CLOSED) {
          throw new IllegalStateException();
       }
       closeNoCheck();
@@ -220,7 +213,7 @@ public class SimpleConnector {
       return (DSPreset) CloneTransformer.getInstance().transform(preset);
    }
 
-   public void setLiveTime(double timeout){
+   public void setLiveTime(double timeout) {
       DSPreset preset = new DSPreset();
       DSPresetTime time = new DSPresetTime();
       time.setTime(timeout);
@@ -233,11 +226,10 @@ public class SimpleConnector {
 
    protected void setPreset(final DSPreset preset) {
       assertOpened();
-      if(this.preset != preset){
+      if (this.preset != preset) {
          this.preset = preset;
          doCall(new Call<Object>() {
-            @Override
-            Object doCall() throws ConnectorException {
+            @Override Object doCall() throws ConnectorException {
                LibraryWrapper.setPreset(dsc, preset);
                return null;
             }
@@ -281,14 +273,14 @@ public class SimpleConnector {
       return startChannel;
    }
 
-   protected void assertOpened(){
-      if(ConnectorState.OPEN != connectorState){
+   protected void assertOpened() {
+      if (ConnectorState.OPEN != connectorState) {
          throw new IllegalStateException("Can't call this method on closed or uninitialized Connector");
       }
    }
 
-   protected void assertMayOpen(){
-      if(getConnectorState() != ConnectorState.NOT_OPENED){
+   protected void assertMayOpen() {
+      if (getConnectorState() != ConnectorState.NOT_OPENED) {
          throw new IllegalStateException("Can't call this method on opened Connector");
       }
    }
@@ -327,18 +319,20 @@ public class SimpleConnector {
       support.removePropertyChangeListener(listener);
    }
 
-   public  <T> T doCall(Call<T> call, Object... additionalInfo) throws GenieException{
+   public <T> T doCall(Call<T> call, Object... additionalInfo) throws GenieException {
       try {
          return call.doCall();
       } catch (ConnectorException e) {
          throw new GenieException(e.getCode(), dsc, additionalInfo);
-      }finally {
+      } finally {
          call.doFinally();
       }
    }
 
-   private static abstract class Call<T>{
+   private static abstract class Call<T> {
       abstract T doCall() throws ConnectorException;
-      void doFinally(){}
+
+      void doFinally() {
+      }
    }
 }

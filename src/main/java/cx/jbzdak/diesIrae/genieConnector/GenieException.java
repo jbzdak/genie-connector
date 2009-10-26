@@ -31,10 +31,13 @@ import org.apache.commons.lang.StringUtils;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-public class GenieException extends RuntimeException{
+public class GenieException extends RuntimeException {
    @NonNull private final int errorCode;
+
    @CheckForNull private final Long detailedErrorCode;
+
    @CheckForNull private final ErrorDescription errorDescription;
+
    @NonNull private final Object[] additionalInfo;
 
    public GenieException(String message, int errorCode) {
@@ -58,7 +61,7 @@ public class GenieException extends RuntimeException{
       this.errorCode = errorCode;
       detailedErrorCode = LibraryWrapper.getDetailedError(dsc);
       errorDescription = new ErrorDescription(detailedErrorCode);
-      this.additionalInfo =  additionalInfo;
+      this.additionalInfo = additionalInfo;
    }
 
    public int getErrorCode() {
@@ -72,22 +75,22 @@ public class GenieException extends RuntimeException{
    @Override
    public String getMessage() {
       StringBuilder message = new StringBuilder("Błąd Genie 2000 ");
-      if(!StringUtils.isEmpty(super.getMessage())){
+      if (!StringUtils.isEmpty(super.getMessage())) {
          message.append("wiadomość orygnialna '");
          message.append(super.getMessage());
          message.append("' ");
       }
-      message.append("Kod błędu ogólnego '" );
+      message.append("Kod błędu ogólnego '");
       message.append(String.valueOf(errorCode));
       message.append(", ");
       message.append(errorDescription);
-      if(!ArrayUtils.isEmpty(additionalInfo)){
+      if (!ArrayUtils.isEmpty(additionalInfo)) {
          message.append("\nDodatkowe informacje: ");
-         for(Object o : additionalInfo){
+         for (Object o : additionalInfo) {
             message.append(o);
             message.append("\n");
          }
-      }                      
+      }
       return message.toString();
    }
 }

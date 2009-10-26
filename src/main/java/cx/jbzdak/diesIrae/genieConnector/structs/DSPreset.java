@@ -30,14 +30,14 @@ import java.io.Serializable;
 
 /**
  * Controls readout preset.
- *
+ * <p/>
  * Created by IntelliJ IDEA.
  * User: jbzdak
  * Date: 2009-08-05
  * Time: 14:58:49
  * To change this template use File | Settings | File Templates.
  */
-public class DSPreset extends Structure implements Serializable{
+public class DSPreset extends Structure implements Serializable {
    /**
     * Preset mode. See {@link cx.jbzdak.diesIrae.genieConnector.enums.PresetMode} and
     * {@link #setFlPsetMode(cx.jbzdak.diesIrae.genieConnector.enums.PresetMode)} for
@@ -65,17 +65,17 @@ public class DSPreset extends Structure implements Serializable{
     */
    public NativeLong ulStopCh;
 
-   public void setFlPsetMode(PresetMode flPsetMode){
+   public void setFlPsetMode(PresetMode flPsetMode) {
       updatePresetTime(flPsetMode);
       setFlPsetMode(new NativeLong(flPsetMode.getPresetValue()));
    }
 
-   private void updatePresetTime(PresetMode flPsetMode){
-       if(flPsetMode.getPsPresetTimeField() == null){
+   private void updatePresetTime(PresetMode flPsetMode) {
+      if (flPsetMode.getPsPresetTimeField() == null) {
          throw new IllegalArgumentException("Cant set DSPresetTime value because this " +
                  "PresetMode is not properly configured.");
       }
-      if(dsPresetTime!=null){
+      if (dsPresetTime != null) {
          dsPresetTime.setType(flPsetMode.getPsPresetTimeField());
       }
    }
@@ -94,7 +94,7 @@ public class DSPreset extends Structure implements Serializable{
 
    public void setDsPresetTime(DSPresetTime dsPresetTime) {
       this.dsPresetTime = dsPresetTime;
-      if(flPsetMode!=null && flPsetMode.longValue() != 0){
+      if (flPsetMode != null && flPsetMode.longValue() != 0) {
          updatePresetTime(PresetMode.getPresetFromValue(flPsetMode.longValue()));
       }
    }

@@ -29,18 +29,17 @@ import java.io.Serializable;
 
 /**
  * Union that configures readout time.
- *
+ * <p/>
  * Value that is read from this union by C code depends on value stored in
  * {@link cx.jbzdak.diesIrae.genieConnector.structs.DSPreset#flPsetMode}.
- *
- *  
+ * <p/>
+ * <p/>
  * Created by IntelliJ IDEA.
  * User: jbzdak
  * Date: 2009-08-05
  * Time: 14:58:57
- *
  */
-public class DSPresetTime extends Union implements Serializable{
+public class DSPresetTime extends Union implements Serializable {
 
    public NativeLong sweep;
 

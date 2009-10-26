@@ -27,7 +27,7 @@ import com.sun.jna.NativeLong;
 /**
  * Controls preset setting method. See description of fields. Used by
  * {@link cx.jbzdak.diesIrae.genieConnector.structs.DSPreset}.
- *
+ * <p/>
  * Created by IntelliJ IDEA.
  * User: jbzdak
  * Date: 2009-08-06
@@ -35,7 +35,7 @@ import com.sun.jna.NativeLong;
  */
 public enum PresetMode {
    /**
-      Readout live time.
+    * Readout live time.
     */
    LIVE(1L, Double.class),
    /**
@@ -59,9 +59,9 @@ public enum PresetMode {
     */
    AREA(0x20L, null);
 
-   public static PresetMode getPresetFromValue(long presetValue){
-      for(PresetMode presetMode : values()){
-         if(presetMode.getPresetValue() == presetValue){
+   public static PresetMode getPresetFromValue(long presetValue) {
+      for (PresetMode presetMode : values()) {
+         if (presetMode.getPresetValue() == presetValue) {
             return presetMode;
          }
       }
@@ -73,7 +73,7 @@ public enum PresetMode {
    /**
     * Class of a field that should be used from union {@link cx.jbzdak.diesIrae.genieConnector.structs.DSPresetTime}
     * when using this preset.
-    *
+    * <p/>
     * Null means 'I have no idea, and dont need it :)'. s
     */
    private final Class psPresetTimeField;
@@ -91,5 +91,5 @@ public enum PresetMode {
       return presetValue;
    }
 
-   
+
 }
