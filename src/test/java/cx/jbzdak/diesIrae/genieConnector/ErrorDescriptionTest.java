@@ -20,9 +20,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package genieConnector.test;
+package cx.jbzdak.diesIrae.genieConnector;
 
-import cx.jbzdak.diesIrae.genieConnector.ErrorDescription;
 import cx.jbzdak.diesIrae.genieConnector.enums.ErrorClass;
 import cx.jbzdak.diesIrae.genieConnector.enums.ErrorLevel;
 import junit.framework.Assert;
@@ -39,7 +38,7 @@ public class ErrorDescriptionTest {
 
     @Before
     public void before(){
-         desc = new ErrorDescription(0x300013l);
+         desc = new ErrorDescription(0x278e2aL);
     }
 
     @Test
