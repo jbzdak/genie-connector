@@ -22,12 +22,9 @@
 
 package cx.jbzdak.diesIrae.genieConnector;
 
-import com.sun.jna.FunctionMapper;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,16 +62,11 @@ class GenieConnectorStaticData {
 
    private static Map<String,Object> createLibOptions(){
       Map<String, Object> result = new HashMap<String, Object>();
-      result.put(Library.OPTION_FUNCTION_MAPPER, new Mapper());
+      result.put(Library.OPTION_FUNCTION_MAPPER, new GenieFunctionMapper());
       return result;
    }
+
 }
 
 
 
-class Mapper implements FunctionMapper {
-   @Override
-   public String getFunctionName(NativeLibrary library, Method method) {
-      return GenieConnectorStaticData.FUNCTION_PREFIX + method.getName();
-   }
-}

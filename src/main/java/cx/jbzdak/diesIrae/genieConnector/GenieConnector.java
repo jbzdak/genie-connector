@@ -129,29 +129,3 @@ public class GenieConnector  extends SimpleConnector{
       setLastResult(getSpectrometricData());
    }
 }
-
-class ConnectorStateWatcher extends Timer {
-
-   public Task registerConnector(GenieConnector connector){
-      Task task= new Task(connector);
-      scheduleAtFixedRate(task, 0, connector.getRefreshTime());
-      return task;
-   }
-
-   class Task extends TimerTask {
-
-      private final GenieConnector genieConnector;
-
-      private Task(GenieConnector genieConnector) {
-         this.genieConnector = genieConnector;
-      }
-
-      @Override
-      public void run() {
-         genieConnector.updateState();
-         if(genieConnector.isUpdateResults()){
-            genieConnector.updateLastResult();
-         }
-      }
-   }
-}
