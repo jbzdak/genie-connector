@@ -95,6 +95,20 @@ import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
     */
    public short SadGetParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, byte[] result, short usExpect);
 
+   /**
+     * Zwraca wartość parametru
+     *
+     * @param hDSC     źródło
+     * @param ulParam  kod parametru
+     * @param usRecord rekord
+     * @param usEntry  entry
+     * @param result   tutaj zapiszemy wynik
+     * @param usExpect rozmiar <code>result</code> w bajtach
+     * @return kod błedu.
+     */
+    public short SadGetParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, NativeLongByReference result, short usExpect);
+
+
 
    /**
     * Ustawia parametr CAMA

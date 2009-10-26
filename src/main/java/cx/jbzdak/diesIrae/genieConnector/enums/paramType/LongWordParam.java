@@ -30,8 +30,10 @@ import java.nio.ByteBuffer;
  */
 class LongWordParam extends ParameterType<Long> {
 
+   public static final String NAME = "LONG_WORD";
+
    LongWordParam() {
-      super("LONG_WORD", 'L', C_INT_LENGHT * 4);
+      super(NAME, 'L', C_INT_LENGHT * 4);
    }
 
    @Override

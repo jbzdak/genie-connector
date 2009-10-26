@@ -99,7 +99,7 @@ public abstract class ParameterType<T> {
     * Długość typu int w kompilatorze dla któryego kompilujemy bibliotekę. . .
     * Albo też ta oczekiwana przez GENIE ;)
     */
-   static final short C_INT_LENGHT = 2;
+   static final short C_INT_LENGHT = 4;
 
    /**
     * Długość typu REAL - czyli float ;) dla którego kompilujemy bibliotekę

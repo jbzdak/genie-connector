@@ -96,7 +96,7 @@ public class ErrorDescription {
    @Override
    public String toString() {
       return "ErrorDescription{" +
-              "originalErrorCode=" + originalErrorCode +
+              "originalErrorCode=" + Long.toHexString(originalErrorCode) +
               ", errorClass=" + errorClass +
               ", errorLevel=" + errorLevel +
               ", detailedMessage=" + getDetailedMessage() +

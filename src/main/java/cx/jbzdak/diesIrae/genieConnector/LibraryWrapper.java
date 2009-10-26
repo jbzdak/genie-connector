@@ -29,6 +29,7 @@ import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.ptr.ShortByReference;
 import cx.jbzdak.diesIrae.genieConnector.enums.*;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+import cx.jbzdak.diesIrae.genieConnector.enums.paramType.ParameterType;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSResult;
@@ -91,10 +92,19 @@ import java.util.EnumSet;
    }
 
    static <T> T getParam(DscPointer dsc, Parameter<T> param, short record, short entry) throws ConnectorException {
-      byte[] result = new byte[param.getByteLenght()];
-      short errorCode = GENIE_LIBRARY.SadGetParam(dsc, new NativeLong(param.getParamId()), record, entry, result, param.getByteLenght());
+      Object result;
+      short errorCode;
+      if(ParameterType.WORD.name.equals(param.getType().name)){
+         NativeLongByReference reference = new NativeLongByReference();
+         errorCode = GENIE_LIBRARY.SadGetParam(dsc, new NativeLong(param.getParamId()), record, entry, reference, (short)NativeLong.SIZE);
+         result = reference.getValue().longValue();
+      }else{
+         byte[] bytes = new byte[param.getByteLenght()];
+         errorCode = GENIE_LIBRARY.SadGetParam(dsc, new NativeLong(param.getParamId()), record, entry, bytes, param.getByteLenght());
+         result = param.getType().readArray(bytes);
+      }
       checkError(errorCode);
-      return param.getType().readArray(result);
+      return (T) result;
    }
 
    static <T> void setParam(DscPointer dsc, Parameter<T> param, T value, short record, short entry) throws ConnectorException {
@@ -158,6 +168,4 @@ import java.util.EnumSet;
          throw new ConnectorException(errorCode);
       }
    }
-
-
 }
