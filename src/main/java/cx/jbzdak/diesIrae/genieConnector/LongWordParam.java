@@ -20,27 +20,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
 import java.nio.ByteBuffer;
 
-class WordParam extends ParameterType<Integer> {
+/**
+ * Created by IntelliJ IDEA.
+ * User: Jacek Bzdak jbzdak@gmail.com
+ */
+class LongWordParam extends ParameterType<Long> {
 
-   WordParam() {
-      super("WORD", 'W', C_INT_LENGHT * 2);
+   public static final String NAME = "LONG_WORD";
+
+   LongWordParam() {
+      super(NAME, 'L', 8);
    }
 
    @Override
-   public Integer readArray(byte[] inputBuffer) {
+   public Long readArray(byte[] inputBuffer) {
       ByteBuffer byteBuffer = ByteBuffer.wrap(inputBuffer);
-      return byteBuffer.getInt();
-
+      return byteBuffer.getLong();
    }
 
    @Override
-   public byte[] writeArray(Integer integer) {
-      ByteBuffer byteBuffer = ByteBuffer.allocate(4);
-      byteBuffer.putInt(integer);
+   public byte[] writeArray(Long l) {
+      ByteBuffer byteBuffer = ByteBuffer.allocate(8);
+      byteBuffer.putLong(l);
       return byteBuffer.array();
    }
 }

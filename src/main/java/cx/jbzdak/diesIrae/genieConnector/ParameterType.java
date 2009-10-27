@@ -20,8 +20,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
+import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.math.BigInteger;
@@ -61,14 +62,14 @@ public abstract class ParameterType<T> {
    ParameterType<Date> DATETIME = new DatetimeParam();
 
    public static final
-   ParameterType<?> UNKNOWN_TYPE = new ParameterType<Object>("UNKNOWN", '\0', (short) -1) {
+   ParameterType<?> UNKNOWN_TYPE = new ParameterType<Object>("UNKNOWN", '\0') {
       @Override
-      public Object readArray(byte[] p) {
+      public Object readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usEntry, short usRecord) {
          throw new UnsupportedOperationException();
       }
 
       @Override
-      public byte[] writeArray(Object o) {
+      public void writeParam(GenieLibrary library, Object value, DscPointer dscPointer, Parameter param, short usEntry, short usRecord) {
          throw new UnsupportedOperationException();
       }
    };
@@ -107,33 +108,20 @@ public abstract class ParameterType<T> {
     */
    static final short C_REAL_LENGHT = 4;
 
-   protected ParameterType(String name, char identifierChar, int byteLenght) {
+   ParameterType(String name, char identifierChar) {
       this.name = name;
       this.identifierChar = identifierChar;
-      if (byteLenght > Short.MAX_VALUE)
-         throw new IllegalStateException();
-      this.byteLenght = (short) byteLenght;
+     
    }
 
    public final String name;
 
    public final char identifierChar;
 
-   private final short byteLenght;
+   public abstract T readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usEntry, short usRecord);
 
-   /**
-    * Dla parametrów typu string trzeba podać nazwę... Domyślnie zwracamy #byteLenght
-    *
-    * @param paramName nazwa parametru dla której obliczamy długość
-    * @return długośc w bajtach parametru
-    */
-   public short getByteLenght(String paramName) {
-      return byteLenght;
-   }
+   public abstract void writeParam(GenieLibrary library, T value, DscPointer dscPointer, Parameter param, short usEntry, short usRecord);
 
-   public abstract T readArray(byte[] p);
-
-   public abstract byte[] writeArray(T t);
 }
 
 

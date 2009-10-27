@@ -20,29 +20,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
-import java.nio.ByteBuffer;
+import java.math.BigInteger;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class RealParam extends ParameterType<Float> {
-   RealParam() {
-      super("FLOAT", 'F', C_REAL_LENGHT * 2);
+class QuadWordParam extends ParameterType<BigInteger> {
+
+   QuadWordParam() {
+      super("QUAD_WORD", 'Q', C_INT_LENGHT * 4);
    }
 
    @Override
-   public byte[] writeArray(Float aFloat) {
-      ByteBuffer byteBuffer = ByteBuffer.allocate(4);
-      byteBuffer.putFloat(aFloat);
-      return byteBuffer.array();
+   public BigInteger readArray(byte[] p) {
+      throw new UnsupportedOperationException();
    }
 
    @Override
-   public Float readArray(byte[] p) {
-      ByteBuffer byteBuffer = ByteBuffer.wrap(p);
-      return byteBuffer.getFloat();
+   public byte[] writeArray(BigInteger bigInteger) {
+      throw new UnsupportedOperationException();
    }
 }

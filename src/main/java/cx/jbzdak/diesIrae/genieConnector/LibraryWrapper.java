@@ -29,7 +29,7 @@ import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.ptr.ShortByReference;
 import cx.jbzdak.diesIrae.genieConnector.enums.*;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
-import cx.jbzdak.diesIrae.genieConnector.enums.paramType.ParameterType;
+import cx.jbzdak.diesIrae.genieConnector.ParameterType;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSResult;

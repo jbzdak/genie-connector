@@ -22,7 +22,7 @@
 
 package cx.jbzdak.diesIrae.genieConnector.enums.param;
 
-import cx.jbzdak.diesIrae.genieConnector.enums.paramType.ParameterType;
+import cx.jbzdak.diesIrae.genieConnector.ParameterType;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 /**
