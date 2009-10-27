@@ -47,6 +47,7 @@ public class ErrorDescription {
               " wywoła się start akwizycji danych na pliku z zapisanymi pomiarami");
       detailedMessages.put(0xfff4, "Network configuration file error");
       detailedMessages.put(0x22, "Busy but never opened. . . Just reset the god damn hardware!");
+      detailedMessages.put(0x805a, "Parametr ten nie jest dostępny w źródle danych");
    }
 
    private final Long originalErrorCode;
