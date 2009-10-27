@@ -51,13 +51,4 @@ public class ParamTest {
     public void test2(){
        Assert.assertEquals(connector.getParam(Parameters.L_ADCFANTIC).longValue(), 4096L);
     }
-
-
-    @Test
-    public void test3(){
-       System.out.println(connector.getParam(Parameters.T_AMPTYPE));
-    }
-
-
-
 }
