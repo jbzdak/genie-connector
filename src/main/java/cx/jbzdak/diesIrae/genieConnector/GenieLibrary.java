@@ -108,8 +108,6 @@ import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
      */
     public short SadGetParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, NativeLongByReference result, short usExpect);
 
-
-
    /**
     * Ustawia parametr CAMA
     *
@@ -122,6 +120,8 @@ import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
     * @return kod błędu
     */
    public short SadPutParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, byte[] result, short usExpect);
+
+   public short SadPutParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, NativeLongByReference result, short usExpect);
 
    /**
     * Zamyka żródło danych otwarte przes DSC

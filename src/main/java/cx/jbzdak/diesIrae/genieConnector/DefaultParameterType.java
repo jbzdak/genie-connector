@@ -1,5 +1,7 @@
 package cx.jbzdak.diesIrae.genieConnector;
 
+import com.sun.jna.NativeLong;
+import com.sun.jna.ptr.NativeLongByReference;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -37,12 +39,19 @@ public abstract class DefaultParameterType<T> extends ParameterType<T>{
    public abstract byte[] writeArray(T t);
 
    @Override
-   public T readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usEntry, short usRecord) {
-      return null;  //To change body of implemented methods use File | Settings | File Templates.
+   public T readParam(GenieLibrary library, DscPointer dsc, Parameter param, short usRecord,  short usEntry) throws ConnectorException {
+      byte[] result = new byte[getByteLenght(param.getName())];
+      short errorCode;
+      errorCode = library.SadGetParam(dsc, new NativeLong(param.getParamId()), usRecord, usEntry, result, getByteLenght(param.getName()));
+      LibraryWrapper.checkError(errorCode);
+      T objectResult = readArray(result);
+      return objectResult;
    }
 
    @Override
-   public void writeParam(GenieLibrary library, T value, DscPointer dscPointer, Parameter param, short usEntry, short usRecord) {
-      //To change body of implemented methods use File | Settings | File Templates.
+   public void writeParam(GenieLibrary library, T value, DscPointer dscPointer, Parameter param, short usRecord,  short usEntry) throws ConnectorException {
+      byte[] bytes = writeArray(value);
+      short errorCode = library.SadPutParam(dscPointer, new NativeLong(param.getParamId()), usRecord, usEntry, bytes, getByteLenght(param.getName()));
+      LibraryWrapper.checkError(errorCode);
    }
 }

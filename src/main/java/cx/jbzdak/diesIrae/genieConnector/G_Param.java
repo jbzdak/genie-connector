@@ -25,7 +25,7 @@ package cx.jbzdak.diesIrae.genieConnector;
 /**
  * Cokolwiek to jest . . .
  */
-class G_Param extends ParameterType<Object> {
+class G_Param extends DefaultParameterType<Object> {
    G_Param() {
       super("GReal", 'G', C_REAL_LENGHT * 4);
    }

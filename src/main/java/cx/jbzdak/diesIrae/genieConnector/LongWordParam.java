@@ -22,6 +22,11 @@
 
 package cx.jbzdak.diesIrae.genieConnector;
 
+import com.sun.jna.Library;
+import com.sun.jna.NativeLong;
+import com.sun.jna.ptr.NativeLongByReference;
+import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -33,19 +38,23 @@ class LongWordParam extends ParameterType<Long> {
    public static final String NAME = "LONG_WORD";
 
    LongWordParam() {
-      super(NAME, 'L', 8);
+      super(NAME, 'L');
    }
 
    @Override
-   public Long readArray(byte[] inputBuffer) {
-      ByteBuffer byteBuffer = ByteBuffer.wrap(inputBuffer);
-      return byteBuffer.getLong();
+   public Long readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
+      NativeLongByReference resultRef = new NativeLongByReference();
+      short errorCode = library.SadGetParam(dscPointer, new NativeLong(param.getParamId()), usRecord, usEntry, resultRef, (short) 4);
+      LibraryWrapper.checkError(errorCode);
+      return resultRef.getValue().longValue();
    }
 
    @Override
-   public byte[] writeArray(Long l) {
-      ByteBuffer byteBuffer = ByteBuffer.allocate(8);
-      byteBuffer.putLong(l);
-      return byteBuffer.array();
+   public void writeParam(GenieLibrary library, Long value, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
+      NativeLongByReference resultRef = new NativeLongByReference();
+      resultRef.setValue(new NativeLong(value));
+      short errorCode =
+              library.SadPutParam(dscPointer, new NativeLong(param.getParamId()), usRecord, usEntry, resultRef, (short) NativeLong.SIZE);
+      LibraryWrapper.checkError(errorCode);
    }
 }

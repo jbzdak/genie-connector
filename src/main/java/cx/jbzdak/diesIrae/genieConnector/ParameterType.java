@@ -25,6 +25,7 @@ package cx.jbzdak.diesIrae.genieConnector;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+import javax.annotation.concurrent.ThreadSafe;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -32,6 +33,7 @@ import java.util.*;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
+@ThreadSafe
 public abstract class ParameterType<T> {
 
    public static final
@@ -118,9 +120,9 @@ public abstract class ParameterType<T> {
 
    public final char identifierChar;
 
-   public abstract T readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usEntry, short usRecord);
+   public abstract T readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usRecord,  short usEntry) throws ConnectorException;
 
-   public abstract void writeParam(GenieLibrary library, T value, DscPointer dscPointer, Parameter param, short usEntry, short usRecord);
+   public abstract void writeParam(GenieLibrary library, T value, DscPointer dscPointer, Parameter param, short usRecord,  short usEntry) throws ConnectorException;
 
 }
 

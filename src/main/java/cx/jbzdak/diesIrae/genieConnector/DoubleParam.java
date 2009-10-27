@@ -22,6 +22,8 @@
 
 package cx.jbzdak.diesIrae.genieConnector;
 
+import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -30,19 +32,16 @@ import java.nio.ByteBuffer;
  */
 class DoubleParam extends ParameterType<Double> {
    DoubleParam() {
-      super("DOUBLE", 'D', C_REAL_LENGHT * 4);
+      super("DOUBLE", 'D');
    }
 
    @Override
-   public Double readArray(byte[] p) {
-      ByteBuffer byteBuffer = ByteBuffer.wrap(p);
-      return byteBuffer.getDouble();
+   public Double readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
+      throw new UnsupportedOperationException();
    }
 
    @Override
-   public byte[] writeArray(Double aDouble) {
-      ByteBuffer byteBuffer = ByteBuffer.allocate(8);
-      byteBuffer.putDouble(aDouble);
-      return byteBuffer.array();
+   public void writeParam(GenieLibrary library, Double value, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
+      throw new UnsupportedOperationException();
    }
 }

@@ -24,7 +24,7 @@ package cx.jbzdak.diesIrae.genieConnector;
 
 import java.nio.ByteBuffer;
 
-class WordParam extends ParameterType<Integer> {
+class WordParam extends DefaultParameterType<Integer> {
 
    WordParam() {
       super("WORD", 'W', C_INT_LENGHT * 2);

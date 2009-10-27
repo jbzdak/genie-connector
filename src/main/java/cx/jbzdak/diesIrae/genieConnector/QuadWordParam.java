@@ -22,6 +22,8 @@
 
 package cx.jbzdak.diesIrae.genieConnector;
 
+import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+
 import java.math.BigInteger;
 
 /**
@@ -31,16 +33,16 @@ import java.math.BigInteger;
 class QuadWordParam extends ParameterType<BigInteger> {
 
    QuadWordParam() {
-      super("QUAD_WORD", 'Q', C_INT_LENGHT * 4);
+      super("QUAD_WORD", 'Q');
    }
 
    @Override
-   public BigInteger readArray(byte[] p) {
+   public BigInteger readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
       throw new UnsupportedOperationException();
    }
 
    @Override
-   public byte[] writeArray(BigInteger bigInteger) {
+   public void writeParam(GenieLibrary library, BigInteger value, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
       throw new UnsupportedOperationException();
    }
 }

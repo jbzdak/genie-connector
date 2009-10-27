@@ -28,7 +28,7 @@ import java.nio.ByteBuffer;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class RealParam extends ParameterType<Float> {
+class RealParam extends DefaultParameterType<Float> {
    RealParam() {
       super("FLOAT", 'F', C_REAL_LENGHT * 2);
    }

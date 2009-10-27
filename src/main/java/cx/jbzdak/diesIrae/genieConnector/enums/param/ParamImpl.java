@@ -50,11 +50,6 @@ class ParamImpl<T> implements Parameter<T> {
    }
 
    @NonNull
-   public short getByteLenght() {
-      return type.getByteLenght(name);
-   }
-
-   @NonNull
    public ParameterType<T> getType() {
       return type;
    }
@@ -64,7 +59,8 @@ class ParamImpl<T> implements Parameter<T> {
       return paramId;
    }
 
-   //All params (evil!)
-
+   public String getName() {
+      return name;
+   }
 }
 

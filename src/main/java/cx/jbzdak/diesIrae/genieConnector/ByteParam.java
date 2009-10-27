@@ -26,7 +26,7 @@ package cx.jbzdak.diesIrae.genieConnector;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class ByteParam extends ParameterType<Byte> {
+class ByteParam extends DefaultParameterType<Byte> {
 
    ByteParam() {
       super("BYTE", 'B', 1);

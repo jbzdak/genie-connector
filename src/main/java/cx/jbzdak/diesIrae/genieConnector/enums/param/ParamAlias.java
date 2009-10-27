@@ -54,13 +54,12 @@ public class ParamAlias<T> implements Parameter<T> {
    }
 
    @NonNull
-   public short getByteLenght() {
-      return internal.getByteLenght();
-   }
-
-   @NonNull
    public ParameterType<T> getType() {
       return internal.getType();
+   }
+
+   public String getName() {
+      return internal.getName();
    }
 
    @NonNull

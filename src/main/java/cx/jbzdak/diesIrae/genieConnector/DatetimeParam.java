@@ -28,7 +28,7 @@ import java.util.Date;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class DatetimeParam extends ParameterType<Date> {
+class DatetimeParam extends DefaultParameterType<Date> {
    DatetimeParam() {
       super("DATE", 'X', -1);
    }

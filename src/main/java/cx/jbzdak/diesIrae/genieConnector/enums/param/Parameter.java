@@ -30,9 +30,10 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * User: Jacek Bzdak jbzdak@gmail.com
  */
 public interface Parameter<T> {
-   @NonNull short getByteLenght();
 
    @NonNull ParameterType<T> getType();
 
-   @NonNull long getParamId();
+   long getParamId();
+
+   String getName();
 }
