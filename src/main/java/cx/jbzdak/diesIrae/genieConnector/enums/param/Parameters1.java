@@ -30,7 +30,7 @@ import java.util.Date;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-@SuppressWarnings({"ALL"}) interface Param2 {
+@SuppressWarnings({"ALL"}) interface Parameters1 {
    ParamImpl<String>  T_CTITLE = new ParamImpl<String>('T', 0X20000002, "CTITLE");
    ParamImpl<String>  T_ACQOPNAME = new ParamImpl<String>('T', 0X20000002, "ACQOPNAME");
    ParamImpl<String>  T_CPNAME = new ParamImpl<String>('T', 0X20000003, "CPNAME");

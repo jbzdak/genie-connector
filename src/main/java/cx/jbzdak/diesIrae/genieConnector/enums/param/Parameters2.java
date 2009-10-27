@@ -28,7 +28,7 @@ import java.util.Date;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-@SuppressWarnings({"ALL"}) interface Params1 {
+@SuppressWarnings({"ALL"}) interface Parameters2 {
    ParamImpl<String>  T_EXPBACK = new ParamImpl<String>('T', 0X20100049, "EXPBACK");
    ParamImpl<String>  T_EXPLIB = new ParamImpl<String>('T', 0X2010004A, "EXPLIB");
    ParamImpl<String>  T_EXPINT = new ParamImpl<String>('T', 0X2010004B, "EXPINT");
