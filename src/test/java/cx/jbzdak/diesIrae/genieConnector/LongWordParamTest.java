@@ -20,24 +20,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
-import java.util.Date;
+import org.junit.Assert;
+import org.junit.Test;
+
 
 /**
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class DatetimeParam extends ParameterType<Date>{
-    DatetimeParam() {
-        super("DATE", 'X', -1);
-    }@Override
-     public Date readArray(byte[] p) {
-        throw new UnsupportedOperationException();
-    }
 
-    @Override
-    public byte[] writeArray(Date date) {
-        throw new UnsupportedOperationException();
-    }
+public class LongWordParamTest {
+
+    LongWordParam param = new LongWordParam();
+
+    long[] testedLongs = new long[]{1,5,0,-60,15000, (long) (Math.pow(2,54) - 108)};
+
+//    void testLong(long tested){
+//        Assert.assertEquals(tested, param.readArray(param.writeArray(tested)).longValue());
+//    }
+//
+//    @Test
+//    public void testPrepared(){
+//        for(long test : testedLongs){
+//            testLong(test);
+//        }
+//    }
+//
+//    @Test
+//    public void testRandom(){
+//        Random random = new SecureRandom();
+//        for(int ii =0; ii< 10000; ii++){
+//            testLong(random.nextLong());
+//        }
+//    }
 }

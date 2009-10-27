@@ -35,7 +35,7 @@ import java.util.Map;
  * Time: 13:33:27
  */
 public enum StructureType {
-   DSPreset(cx.jbzdak.diesIrae.genieConnector.structs.DSPreset.class, (short)36);
+   DSPreset(cx.jbzdak.diesIrae.genieConnector.structs.DSPreset.class, (short) 36);
 
    private final Class<? extends Structure> structureClass;
 
@@ -43,23 +43,23 @@ public enum StructureType {
 
    private static final Map<Class<? extends Structure>, Short> mappings;
 
-   static{
+   static {
       Map<Class<? extends Structure>, Short> mappings2 = new HashMap<Class<? extends Structure>, Short>();
-      for(StructureType type : StructureType.values()){
+      for (StructureType type : StructureType.values()) {
          mappings2.put(type.getStructureClass(), type.getStructureId());
       }
       mappings = Collections.unmodifiableMap(mappings2);
    }
 
-   public static short getStructureId(Structure structure){
-      if(structure==null){
+   public static short getStructureId(Structure structure) {
+      if (structure == null) {
          throw new IllegalArgumentException();
       }
       Short result = mappings.get(structure.getClass());
-      if(result == null){
+      if (result == null) {
          throw new IllegalArgumentException("Unknown structure id");
       }
-      return result;        
+      return result;
    }
 
    StructureType(Class<? extends Structure> structureClass, short structureId) {

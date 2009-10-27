@@ -27,5 +27,5 @@ package cx.jbzdak.diesIrae.genieConnector.enums;
  * User: Jacek Bzdak jbzdak@gmail.com
  */
 public enum FlushType {
-    AUTO_COMMIT, MANUAL
+   AUTO_COMMIT, MANUAL
 }

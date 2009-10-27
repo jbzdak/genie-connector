@@ -20,23 +20,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
-/**
- * Cokolwiek to jest . . .
- */
-class G_Param extends ParameterType<Object>{
-    G_Param() {
-        super("GReal", 'G', C_REAL_LENGHT*4);
-    }
+import java.nio.ByteBuffer;
 
-    @Override
-    public byte[] writeArray(Object o) {
-        throw new UnsupportedOperationException();
-    }
+class WordParam extends DefaultParameterType<Integer> {
 
-    @Override
-    public Object readArray(byte[] p) {
-         throw new UnsupportedOperationException();
-    }
+   WordParam() {
+      super("WORD", 'W', C_INT_LENGHT * 2);
+   }
+
+   @Override
+   public Integer readArray(byte[] inputBuffer) {
+      ByteBuffer byteBuffer = ByteBuffer.wrap(inputBuffer);
+      return byteBuffer.getInt();
+
+   }
+
+   @Override
+   public byte[] writeArray(Integer integer) {
+      ByteBuffer byteBuffer = ByteBuffer.allocate(4);
+      byteBuffer.putInt(integer);
+      return byteBuffer.array();
+   }
 }

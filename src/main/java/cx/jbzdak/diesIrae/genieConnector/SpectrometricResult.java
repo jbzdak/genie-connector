@@ -30,51 +30,53 @@ import java.nio.IntBuffer;
  */
 public class SpectrometricResult {
 
-    private final short startChannel;
-    private final short endChannel;
-    private final IntBuffer contents;
+   private final short startChannel;
 
-    public static SpectrometricResult getEmptyResult(short startChannel, short endChannel){
-       IntBuffer intBuffer = IntBuffer.allocate(endChannel);
-       return new SpectrometricResult(startChannel, endChannel, intBuffer);
-    }
+   private final short endChannel;
 
-    public SpectrometricResult(short startChannel, short endChannel, IntBuffer contents) {
-        this.startChannel = startChannel;
-        this.endChannel = endChannel;
-        this.contents = contents;
-    }
+   private final IntBuffer contents;
 
-    public short getStartChannel() {
-        return startChannel;
-    }
-
-    public short getEndChannel() {
-        return endChannel;
-    }
-
-    public short getSize(){
-      return (short)(endChannel - startChannel);  
-    }
-
-    IntBuffer getContents() {
-        return contents.asReadOnlyBuffer();
-    }
-
-   public RegionOfInterest createRoi(int roiStartChannel, int roiEndChannel){
-      return new RegionOfInterest((short)roiStartChannel, (short)roiEndChannel, this);      
+   public static SpectrometricResult getEmptyResult(short startChannel, short endChannel) {
+      IntBuffer intBuffer = IntBuffer.allocate(endChannel);
+      return new SpectrometricResult(startChannel, endChannel, intBuffer);
    }
 
-    public int getCountForChannel(int channelNum){
-        return contents.get(channelNum - startChannel);    
-    }
+   public SpectrometricResult(short startChannel, short endChannel, IntBuffer contents) {
+      this.startChannel = startChannel;
+      this.endChannel = endChannel;
+      this.contents = contents;
+   }
 
-    @Override
-    public String toString() {
-        return "SpectrometricResult{" +
-                "startChannel=" + startChannel +
-                ", endChannel=" + endChannel +
-                ", contents=" + contents +
-                '}';
-    }
+   public short getStartChannel() {
+      return startChannel;
+   }
+
+   public short getEndChannel() {
+      return endChannel;
+   }
+
+   public short getSize() {
+      return (short) (endChannel - startChannel);
+   }
+
+   IntBuffer getContents() {
+      return contents.asReadOnlyBuffer();
+   }
+
+   public RegionOfInterest createRoi(int roiStartChannel, int roiEndChannel) {
+      return new RegionOfInterest((short) roiStartChannel, (short) roiEndChannel, this);
+   }
+
+   public int getCountForChannel(int channelNum) {
+      return contents.get(channelNum - startChannel);
+   }
+
+   @Override
+   public String toString() {
+      return "SpectrometricResult{" +
+              "startChannel=" + startChannel +
+              ", endChannel=" + endChannel +
+              ", contents=" + contents +
+              '}';
+   }
 }

@@ -20,7 +20,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
+
+import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 
 import java.math.BigInteger;
 
@@ -28,19 +30,19 @@ import java.math.BigInteger;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class QuadWordParam extends ParameterType<BigInteger>{
+class QuadWordParam extends ParameterType<BigInteger> {
 
-    QuadWordParam() {
-        super("QUAD_WORD", 'Q', C_INT_LENGHT*4);
-    }
+   QuadWordParam() {
+      super("QUAD_WORD", 'Q');
+   }
 
-    @Override
-    public BigInteger readArray(byte[] p) {
-         throw new UnsupportedOperationException();
-    }
+   @Override
+   public BigInteger readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
+      throw new UnsupportedOperationException();
+   }
 
-    @Override
-    public byte[] writeArray(BigInteger bigInteger) {
-         throw new UnsupportedOperationException();
-    }
+   @Override
+   public void writeParam(GenieLibrary library, BigInteger value, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
+      throw new UnsupportedOperationException();
+   }
 }

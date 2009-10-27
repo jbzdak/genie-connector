@@ -20,25 +20,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
+
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class ByteParam extends ParameterType<Byte>{
+class DatetimeParam extends DefaultParameterType<Date> {
+   DatetimeParam() {
+      super("DATE", 'X', -1);
+   }
 
-    ByteParam() {
-        super("BYTE", 'B', 1);
-    }
+   @Override
+   public Date readArray(byte[] p) {
+      throw new UnsupportedOperationException();
+   }
 
-    @Override
-    public Byte readArray(byte[] inputBuffer) {
-        return inputBuffer[0];
-    }
-
-    @Override
-    public byte[] writeArray(Byte aByte) {
-        return new byte[]{aByte};
-    }
+   @Override
+   public byte[] writeArray(Date date) {
+      throw new UnsupportedOperationException();
+   }
 }

@@ -20,29 +20,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
-
-import java.nio.ByteBuffer;
+package cx.jbzdak.diesIrae.genieConnector;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jacek Bzdak jbzdak@gmail.com
+ * Cokolwiek to jest . . .
  */
-class RealParam extends  ParameterType<Float>{
-    RealParam() {
-        super("FLOAT", 'F', C_REAL_LENGHT*2);
-    }
+class G_Param extends DefaultParameterType<Object> {
+   G_Param() {
+      super("GReal", 'G', C_REAL_LENGHT * 4);
+   }
 
-    @Override
-    public byte[] writeArray(Float aFloat) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(4);
-        byteBuffer.putFloat(aFloat);
-        return byteBuffer.array();
-    }
+   @Override
+   public byte[] writeArray(Object o) {
+      throw new UnsupportedOperationException();
+   }
 
-    @Override
-    public Float readArray(byte[] p) {
-        ByteBuffer byteBuffer = ByteBuffer.wrap(p);
-        return byteBuffer.getFloat();
-    }
+   @Override
+   public Object readArray(byte[] p) {
+      throw new UnsupportedOperationException();
+   }
 }

@@ -29,14 +29,14 @@ import com.sun.jna.PointerType;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-public class DscPointer extends PointerType{
+public class DscPointer extends PointerType {
 
-    public DscPointer() {
-        super();
-    }
+   public DscPointer() {
+      super();
+   }
 
-    public DscPointer(Pointer p) {
-        super(p);
-    }
+   public DscPointer(Pointer p) {
+      super(p);
+   }
 
 }

@@ -30,98 +30,116 @@ import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.ptr.ShortByReference;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
 
-@SuppressWarnings({"MethodWithTooManyParameters", "UnusedReturnValue"})
-interface GenieLibrary extends Library{
+@SuppressWarnings({"MethodWithTooManyParameters", "UnusedReturnValue"}) interface GenieLibrary extends Library {
 
 
    /**
     * Inicjalizuje środowisko z danych z rejestru
     */
-    public void vG2KEnv();
+   public void vG2KEnv();
 
-    /**
-     * Inicjalizuje hDsc
-     * @param hDSC Inicjalizowany wskaźnik na źródło danych
-     * @param zero Parametr który musi być zerem
-     * @param zero2 Kolejny parametr który musi być zerem
-     * @return zero jak OK inaczej że źle
-     */
-    @SuppressWarnings({"SameParameterValue"})
-    public int iUtlCreateFileDSC(PointerByReference hDSC, int zero, int zero2);
+   /**
+    * Inicjalizuje hDsc
+    *
+    * @param hDSC  Inicjalizowany wskaźnik na źródło danych
+    * @param zero  Parametr który musi być zerem
+    * @param zero2 Kolejny parametr który musi być zerem
+    * @return zero jak OK inaczej że źle
+    */
+   @SuppressWarnings({"SameParameterValue"})
+   public int iUtlCreateFileDSC(PointerByReference hDSC, int zero, int zero2);
 
-     /**
-     * Inicjalizuje hDsc
-     * @param hDSC Inicjalizowany wskaźnik na źródło danych
-     * @param zero Parametr który musi być zerem
-     * @param zero2 Kolejny parametr który musi być zerem
-     * @return zero jak OK inaczej że źle
-     */
-    @SuppressWarnings({"SameParameterValue"})
-    public int iUtlCreateFileDSC2(PointerByReference hDSC, int zero, int zero2);
+   /**
+    * Inicjalizuje hDsc
+    *
+    * @param hDSC  Inicjalizowany wskaźnik na źródło danych
+    * @param zero  Parametr który musi być zerem
+    * @param zero2 Kolejny parametr który musi być zerem
+    * @return zero jak OK inaczej że źle
+    */
+   @SuppressWarnings({"SameParameterValue"})
+   public int iUtlCreateFileDSC2(PointerByReference hDSC, int zero, int zero2);
 
-    /**
-     *
-     * @param dscPointer dsc którego status sobie czytamy
-     * @param result wynik działania
-     * @param dummy1 coś co musi tam być, ale się nie wykorzystuje
-     * @param dummy2 patrz dummy1
-     * @return nie wiem co zwraca --- error kod sprawdzenia błędu?? Dokumentacja po stronie C jest niepełna w tym zkresie
-     */
-    public short SadGetStatus (DscPointer dscPointer, NativeLongByReference result, ShortByReference dummy1, ShortByReference dummy2);
+   /**
+    * @param dscPointer dsc którego status sobie czytamy
+    * @param result     wynik działania
+    * @param dummy1     coś co musi tam być, ale się nie wykorzystuje
+    * @param dummy2     patrz dummy1
+    * @return nie wiem co zwraca --- error kod sprawdzenia błędu?? Dokumentacja po stronie C jest niepełna w tym zkresie
+    */
+   public short SadGetStatus(DscPointer dscPointer, NativeLongByReference result, ShortByReference dummy1, ShortByReference dummy2);
 
-    /**
-     * Otwiera źródło danych
-     * @param dsc dsc dla ktorego otwieramy dataSource
-     * @param sourceName nazwa źródła (moze być kwalifikowana nazwa pliku (bez spacji w środku??)), albo nazwa detektora.
-     * @param type typ
-     * @param acces tryb dostępu
-     * @param verify to nie wiem.
-     * @param shellId dla nas ""
-     * @return kod błędu
-     */
-    public short SadOpenDataSource(DscPointer dsc, String sourceName, short type, short acces, short verify, String shellId);
+   /**
+    * Otwiera źródło danych
+    *
+    * @param dsc        dsc dla ktorego otwieramy dataSource
+    * @param sourceName nazwa źródła (moze być kwalifikowana nazwa pliku (bez spacji w środku??)), albo nazwa detektora.
+    * @param type       typ
+    * @param acces      tryb dostępu
+    * @param verify     to nie wiem.
+    * @param shellId    dla nas ""
+    * @return kod błędu
+    */
+   public short SadOpenDataSource(DscPointer dsc, String sourceName, short type, short acces, short verify, String shellId);
 
-    /**
+   /**
+    * Zwraca wartość parametru
+    *
+    * @param hDSC     źródło
+    * @param ulParam  kod parametru
+    * @param usRecord rekord
+    * @param usEntry  entry
+    * @param result   tutaj zapiszemy wynik
+    * @param usExpect rozmiar <code>result</code> w bajtach
+    * @return kod błedu.
+    */
+   public short SadGetParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, byte[] result, short usExpect);
+
+   /**
      * Zwraca wartość parametru
-     * @param hDSC źródło
-     * @param ulParam kod parametru
+     *
+     * @param hDSC     źródło
+     * @param ulParam  kod parametru
      * @param usRecord rekord
-     * @param usEntry entry
-     * @param result tutaj zapiszemy wynik
+     * @param usEntry  entry
+     * @param result   tutaj zapiszemy wynik
      * @param usExpect rozmiar <code>result</code> w bajtach
      * @return kod błedu.
      */
-    public short SadGetParam(DscPointer hDSC, NativeLong ulParam, short usRecord,   short usEntry, byte[] result, short usExpect );
-
+    public short SadGetParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, NativeLongByReference result, short usExpect);
 
    /**
     * Ustawia parametr CAMA
-    * @param hDSC źródło
-    * @param ulParam kod parametru
+    *
+    * @param hDSC     źródło
+    * @param ulParam  kod parametru
     * @param usRecord rekord
-    * @param usEntry entru
-    * @param result dane do zapisania
+    * @param usEntry  entru
+    * @param result   dane do zapisania
     * @param usExpect rozmiar danych w bajtach
     * @return kod błędu
     */
-    public short  SadPutParam(DscPointer hDSC, NativeLong ulParam, short usRecord,   short usEntry, byte[] result, short usExpect );
+   public short SadPutParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, byte[] result, short usExpect);
 
-    /**
-     * Zamyka żródło danych otwarte przes DSC
-     * @param dsc dsc
-     * @return kod błędu
-     */
-    public short SadCloseDataSource(DscPointer dsc);
-
-    /**
-     * Dealokuje ten kawałek biblioteki :)
-     * @param dsc dsc
-     * @return kod błędu
-     */
-    public short SadDeleteDSC(DscPointer dsc);
+   public short SadPutParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, NativeLongByReference result, short usExpect);
 
    /**
+    * Zamyka żródło danych otwarte przes DSC
     *
+    * @param dsc dsc
+    * @return kod błędu
+    */
+   public short SadCloseDataSource(DscPointer dsc);
+
+   /**
+    * Dealokuje ten kawałek biblioteki :)
+    *
+    * @param dsc dsc
+    * @return kod błędu
+    */
+   public short SadDeleteDSC(DscPointer dsc);
+
+   /**
     * @param sdc
     * @param structType
     * @param record
@@ -130,52 +148,57 @@ interface GenieLibrary extends Library{
     * @param structSize
     * @return
     */
-    public short SadPutStruct(DscPointer sdc, short structType, short record, short entry, Pointer ptr, short structSize);
+   public short SadPutStruct(DscPointer sdc, short structType, short record, short entry, Pointer ptr, short structSize);
 
-    /**
-     * Powoduje wyplucie danych do pliku/urządzenia
-     * @param dsc dsc
-     * @return kod błędu
-     */
-    public short SadFlush(DscPointer dsc);
+   /**
+    * Powoduje wyplucie danych do pliku/urządzenia
+    *
+    * @param dsc dsc
+    * @return kod błędu
+    */
+   public short SadFlush(DscPointer dsc);
 
-    /**
+   /**
     * Ustawia stru
+    *
     * @param dsc
     * @param usDevice
     * @param usOpCode
     * @return
     */
-    public short SadControlDSC(DscPointer dsc, short usDevice, short usOpCode);
+   public short SadControlDSC(DscPointer dsc, short usDevice, short usOpCode);
 
-
-    /**
-     * Pobiera spektralne dane
-     * @param dsc żródło danych
-     * @param start pierwszy kanał
-     * @param count ilość kanałów do zapisania --- max 4000 na raz przy jednym wywołaniu
-     * @param useFloats 1 jeśli wybnik ma być zwrocony jako dana zmienniprzecinkowa
-     * @param result wynik działania
-     * @return kod błędu
-     */
-    public short SadGetSpectrum(DscPointer dsc, short start, short count, short useFloats, int[] result);
 
    /**
-     * Pobiera spektralne dane
-     * @param dsc żródło danych
-     * @param start pierwszy kanał
-     * @param count ilość kanałów do zapisania --- max 4000 na raz przy jednym wywołaniu
-     * @param input dane
-     * @return kod błędu
-     */
-    public short SadPutSpectrum(DscPointer dsc, short start, short count, int[] input);
+    * Pobiera spektralne dane
+    *
+    * @param dsc       żródło danych
+    * @param start     pierwszy kanał
+    * @param count     ilość kanałów do zapisania --- max 4000 na raz przy jednym wywołaniu
+    * @param useFloats 1 jeśli wybnik ma być zwrocony jako dana zmienniprzecinkowa
+    * @param result    wynik działania
+    * @return kod błędu
+    */
+   public short SadGetSpectrum(DscPointer dsc, short start, short count, short useFloats, int[] result);
+
+   /**
+    * Pobiera spektralne dane
+    *
+    * @param dsc   żródło danych
+    * @param start pierwszy kanał
+    * @param count ilość kanałów do zapisania --- max 4000 na raz przy jednym wywołaniu
+    * @param input dane
+    * @return kod błędu
+    */
+   public short SadPutSpectrum(DscPointer dsc, short start, short count, int[] input);
 
    /**
     * Zwraca stan źródła danych
+    *
     * @param dscPointer żródło danych
-    * @param opCode typ danych do zwrócenia
-    * @param result wyniyk
+    * @param opCode     typ danych do zwrócenia
+    * @param result     wyniyk
     * @return kod błędu
     */
-    public short SadQueryDataSource(DscPointer dscPointer, short opCode, DSQuery result);
+   public short SadQueryDataSource(DscPointer dscPointer, short opCode, DSQuery result);
 }
