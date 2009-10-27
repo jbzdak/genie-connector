@@ -22,7 +22,7 @@
 
 package cx.jbzdak.diesIrae.genieConnector.enums.param;
 
-import cx.jbzdak.diesIrae.genieConnector.enums.paramType.ParameterType;
+import cx.jbzdak.diesIrae.genieConnector.ParameterType;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 /**
@@ -42,6 +42,11 @@ public class ParamAlias<T> implements Parameter<T> {
     */
    public static final ParamAlias<Long> COINCIDENCE_MODE = new ParamAlias<Long>(Parameters.L_ADCFANTIC);
 
+   /**
+    * Maximum number of gain passes
+    */
+   public static final ParamAlias<Long> MAX_GAIN_PASS= new ParamAlias<Long>(Parameters.L_MAXGAINPASS);
+
    private final ParamImpl internal;
 
    ParamAlias(ParamImpl internal) {
@@ -49,13 +54,12 @@ public class ParamAlias<T> implements Parameter<T> {
    }
 
    @NonNull
-   public short getByteLenght() {
-      return internal.getByteLenght();
-   }
-
-   @NonNull
    public ParameterType<T> getType() {
       return internal.getType();
+   }
+
+   public String getName() {
+      return internal.getName();
    }
 
    @NonNull

@@ -20,26 +20,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
-import java.util.Date;
+import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+
+import java.math.BigInteger;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class DatetimeParam extends ParameterType<Date> {
-   DatetimeParam() {
-      super("DATE", 'X', -1);
+class QuadWordParam extends ParameterType<BigInteger> {
+
+   QuadWordParam() {
+      super("QUAD_WORD", 'Q');
    }
 
    @Override
-   public Date readArray(byte[] p) {
+   public BigInteger readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
       throw new UnsupportedOperationException();
    }
 
    @Override
-   public byte[] writeArray(Date date) {
+   public void writeParam(GenieLibrary library, BigInteger value, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
       throw new UnsupportedOperationException();
    }
 }

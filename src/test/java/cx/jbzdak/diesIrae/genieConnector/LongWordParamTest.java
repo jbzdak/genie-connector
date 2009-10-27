@@ -20,27 +20,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
-import java.math.BigInteger;
+import cx.jbzdak.diesIrae.genieConnector.LongWordParam;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.security.SecureRandom;
+import java.util.Random;
+
 
 /**
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class QuadWordParam extends ParameterType<BigInteger> {
 
-   QuadWordParam() {
-      super("QUAD_WORD", 'Q', C_INT_LENGHT * 4);
-   }
+public class LongWordParamTest {
 
-   @Override
-   public BigInteger readArray(byte[] p) {
-      throw new UnsupportedOperationException();
-   }
+    LongWordParam param = new LongWordParam();
 
-   @Override
-   public byte[] writeArray(BigInteger bigInteger) {
-      throw new UnsupportedOperationException();
-   }
+    long[] testedLongs = new long[]{1,5,0,-60,15000, (long) (Math.pow(2,54) - 108)};
+
+//    void testLong(long tested){
+//        Assert.assertEquals(tested, param.readArray(param.writeArray(tested)).longValue());
+//    }
+//
+//    @Test
+//    public void testPrepared(){
+//        for(long test : testedLongs){
+//            testLong(test);
+//        }
+//    }
+//
+//    @Test
+//    public void testRandom(){
+//        Random random = new SecureRandom();
+//        for(int ii =0; ii< 10000; ii++){
+//            testLong(random.nextLong());
+//        }
+//    }
 }

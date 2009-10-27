@@ -20,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
 import com.sun.jna.Native;
 
@@ -33,7 +33,9 @@ import java.util.Map;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-@SuppressWarnings({"ALL"}) class CharacterParam extends ParameterType<String> {
+@SuppressWarnings({"ALL"})
+
+class CharacterParam extends DefaultParameterType<String> {
 
    private static final Map<String, Integer> NAME_TO_LENGHT_MAPPER;
 

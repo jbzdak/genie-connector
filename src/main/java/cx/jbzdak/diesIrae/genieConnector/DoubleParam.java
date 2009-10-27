@@ -20,25 +20,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
+
+import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+
+import java.nio.ByteBuffer;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class ByteParam extends ParameterType<Byte> {
-
-   ByteParam() {
-      super("BYTE", 'B', 1);
+class DoubleParam extends ParameterType<Double> {
+   DoubleParam() {
+      super("DOUBLE", 'D');
    }
 
    @Override
-   public Byte readArray(byte[] inputBuffer) {
-      return inputBuffer[0];
+   public Double readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
+      throw new UnsupportedOperationException();
    }
 
    @Override
-   public byte[] writeArray(Byte aByte) {
-      return new byte[]{aByte};
+   public void writeParam(GenieLibrary library, Double value, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
+      throw new UnsupportedOperationException();
    }
 }

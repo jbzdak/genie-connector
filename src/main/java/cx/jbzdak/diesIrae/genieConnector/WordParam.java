@@ -20,29 +20,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
 import java.nio.ByteBuffer;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Jacek Bzdak jbzdak@gmail.com
- */
-class DoubleParam extends ParameterType<Double> {
-   DoubleParam() {
-      super("DOUBLE", 'D', C_REAL_LENGHT * 4);
+class WordParam extends DefaultParameterType<Integer> {
+
+   WordParam() {
+      super("WORD", 'W', C_INT_LENGHT * 2);
    }
 
    @Override
-   public Double readArray(byte[] p) {
-      ByteBuffer byteBuffer = ByteBuffer.wrap(p);
-      return byteBuffer.getDouble();
+   public Integer readArray(byte[] inputBuffer) {
+      ByteBuffer byteBuffer = ByteBuffer.wrap(inputBuffer);
+      return byteBuffer.getInt();
+
    }
 
    @Override
-   public byte[] writeArray(Double aDouble) {
-      ByteBuffer byteBuffer = ByteBuffer.allocate(8);
-      byteBuffer.putDouble(aDouble);
+   public byte[] writeArray(Integer integer) {
+      ByteBuffer byteBuffer = ByteBuffer.allocate(4);
+      byteBuffer.putInt(integer);
       return byteBuffer.array();
    }
 }

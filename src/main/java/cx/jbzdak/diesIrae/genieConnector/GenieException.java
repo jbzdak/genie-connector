@@ -56,8 +56,8 @@ public class GenieException extends RuntimeException {
       this.additionalInfo = new Object[0];
    }
 
-   GenieException(int errorCode, DscPointer dsc, Object... additionalInfo) {
-      super();
+   GenieException(int errorCode, DscPointer dsc, ConnectorException co, Object... additionalInfo) {
+      super(co);
       this.errorCode = errorCode;
       detailedErrorCode = LibraryWrapper.getDetailedError(dsc);
       errorDescription = new ErrorDescription(detailedErrorCode);

@@ -29,6 +29,7 @@ import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.ptr.ShortByReference;
 import cx.jbzdak.diesIrae.genieConnector.enums.*;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+import cx.jbzdak.diesIrae.genieConnector.ParameterType;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSResult;
@@ -91,16 +92,11 @@ import java.util.EnumSet;
    }
 
    static <T> T getParam(DscPointer dsc, Parameter<T> param, short record, short entry) throws ConnectorException {
-      byte[] result = new byte[param.getByteLenght()];
-      short errorCode = GENIE_LIBRARY.SadGetParam(dsc, new NativeLong(param.getParamId()), record, entry, result, param.getByteLenght());
-      checkError(errorCode);
-      return param.getType().readArray(result);
+      return param.getType().readParam(GENIE_LIBRARY, dsc, param, record, entry);
    }
 
    static <T> void setParam(DscPointer dsc, Parameter<T> param, T value, short record, short entry) throws ConnectorException {
-      byte[] bytes = param.getType().writeArray(value);
-      short errorCode = GENIE_LIBRARY.SadPutParam(dsc, new NativeLong(param.getParamId()), record, entry, bytes, param.getByteLenght());
-      checkError(errorCode);
+     param.getType().writeParam(GENIE_LIBRARY, value, dsc, param, record, entry);
    }
 
    static void flush(DscPointer dsc) throws ConnectorException {
@@ -147,17 +143,15 @@ import java.util.EnumSet;
    }
 
 
-   private static void checkError(short errorCode) throws ConnectorException {
+   static void checkError(short errorCode) throws ConnectorException {
       if (errorCode != 0) {
          throw new ConnectorException(errorCode);
       }
    }
 
-   private static void checkError(int errorCode) throws ConnectorException {
+   static void checkError(int errorCode) throws ConnectorException {
       if (errorCode != 0) {
          throw new ConnectorException(errorCode);
       }
    }
-
-
 }

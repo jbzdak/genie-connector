@@ -323,7 +323,7 @@ public class SimpleConnector {
       try {
          return call.doCall();
       } catch (ConnectorException e) {
-         throw new GenieException(e.getCode(), dsc, additionalInfo);
+         throw new GenieException(e.getCode(), dsc, e, additionalInfo);
       } finally {
          call.doFinally();
       }

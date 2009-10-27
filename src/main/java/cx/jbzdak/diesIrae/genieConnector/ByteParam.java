@@ -20,30 +20,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
-
-import java.nio.ByteBuffer;
+package cx.jbzdak.diesIrae.genieConnector;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class LongWordParam extends ParameterType<Long> {
+class ByteParam extends DefaultParameterType<Byte> {
 
-   LongWordParam() {
-      super("LONG_WORD", 'L', C_INT_LENGHT * 4);
+   ByteParam() {
+      super("BYTE", 'B', 1);
    }
 
    @Override
-   public Long readArray(byte[] inputBuffer) {
-      ByteBuffer byteBuffer = ByteBuffer.wrap(inputBuffer);
-      return byteBuffer.getLong();
+   public Byte readArray(byte[] inputBuffer) {
+      return inputBuffer[0];
    }
 
    @Override
-   public byte[] writeArray(Long l) {
-      ByteBuffer byteBuffer = ByteBuffer.allocate(8);
-      byteBuffer.putLong(l);
-      return byteBuffer.array();
+   public byte[] writeArray(Byte aByte) {
+      return new byte[]{aByte};
    }
 }
