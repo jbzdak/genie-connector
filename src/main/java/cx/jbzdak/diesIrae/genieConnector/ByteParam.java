@@ -20,42 +20,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.security.SecureRandom;
-import java.util.Random;
-
+package cx.jbzdak.diesIrae.genieConnector;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
+class ByteParam extends DefaultParameterType<Byte> {
 
-public class LongWordParamTest {
+   ByteParam() {
+      super("BYTE", 'B', 1);
+   }
 
-    LongWordParam param = new LongWordParam();
+   @Override
+   public Byte readArray(byte[] inputBuffer) {
+      return inputBuffer[0];
+   }
 
-    long[] testedLongs = new long[]{1,5,0,-60,15000, (long) (Math.pow(2,54) - 108)};
-
-    void testLong(long tested){
-        Assert.assertEquals(tested, param.readArray(param.writeArray(tested)).longValue());
-    }
-
-    @Test
-    public void testPrepared(){
-        for(long test : testedLongs){
-            testLong(test);
-        }
-    }
-
-    @Test
-    public void testRandom(){
-        Random random = new SecureRandom();
-        for(int ii =0; ii< 10000; ii++){
-            testLong(random.nextLong());
-        }
-    }
+   @Override
+   public byte[] writeArray(Byte aByte) {
+      return new byte[]{aByte};
+   }
 }

@@ -20,45 +20,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package genieConnector.test;
+package cx.jbzdak.diesIrae.genieConnector;
 
-import cx.jbzdak.diesIrae.genieConnector.ErrorDescription;
-import cx.jbzdak.diesIrae.genieConnector.enums.ErrorClass;
-import cx.jbzdak.diesIrae.genieConnector.enums.ErrorLevel;
-import junit.framework.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-public class ErrorDescriptionTest {
-
-     ErrorDescription desc;
-
-    @Before
-    public void before(){
-         desc = new ErrorDescription(0x300013l);
-    }
-
-    @Test
-    public void testSpecificCode(){
-        Assert.assertEquals(desc.getSpecificErrorCode().intValue(), 0x8e2a);
-    }
-
-    @Test
-    public void testErrorLevel(){
-        Assert.assertEquals(desc.getErrorLevel(), ErrorLevel.VDM_DRIVER_ERROR);
-    }
-
-    @Test
-    public void testErrorClass(){
-         Assert.assertEquals(desc.getErrorClass(), ErrorClass.CAM_CLASS);
-    }
-
-   public static void main(String[] args){
-      System.out.println(new ErrorDescription(0x300013l));
+class DatetimeParam extends DefaultParameterType<Date> {
+   DatetimeParam() {
+      super("DATE", 'X', -1);
    }
 
+   @Override
+   public Date readArray(byte[] p) {
+      throw new UnsupportedOperationException();
+   }
+
+   @Override
+   public byte[] writeArray(Date date) {
+      throw new UnsupportedOperationException();
+   }
 }

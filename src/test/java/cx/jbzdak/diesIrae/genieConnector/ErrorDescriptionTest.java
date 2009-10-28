@@ -20,30 +20,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
-import java.nio.ByteBuffer;
+import cx.jbzdak.diesIrae.genieConnector.enums.ErrorClass;
+import cx.jbzdak.diesIrae.genieConnector.enums.ErrorLevel;
+import junit.framework.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class LongWordParam extends ParameterType<Long>{
+public class ErrorDescriptionTest {
 
-    LongWordParam() {
-        super("LONG_WORD", 'L', C_INT_LENGHT*4);
+     ErrorDescription desc;
+
+    @Before
+    public void before(){
+         desc = new ErrorDescription(0x278e2aL);
     }
 
-    @Override
-    public Long readArray(byte[] inputBuffer) {
-        ByteBuffer byteBuffer  = ByteBuffer.wrap(inputBuffer);
-        return byteBuffer.getLong();
+    @Test
+    public void testSpecificCode(){
+        Assert.assertEquals(desc.getSpecificErrorCode().intValue(), 0x8e2a);
     }
 
-    @Override
-    public byte[] writeArray(Long l) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(8);
-        byteBuffer.putLong(l);            
-        return byteBuffer.array();
+    @Test
+    public void testErrorLevel(){
+        Assert.assertEquals(desc.getErrorLevel(), ErrorLevel.VDM_DRIVER_ERROR);
     }
+
+    @Test
+    public void testErrorClass(){
+         Assert.assertEquals(desc.getErrorClass(), ErrorClass.CAM_CLASS);
+    }
+
+   public static void main(String[] args){
+      System.out.println(new ErrorDescription(0x300013l));
+   }
+
 }

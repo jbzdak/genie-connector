@@ -20,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
 import java.nio.ByteBuffer;
 
@@ -28,21 +28,21 @@ import java.nio.ByteBuffer;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class DoubleParam extends  ParameterType<Double>{
-    DoubleParam() {
-        super("DOUBLE", 'D', C_REAL_LENGHT*4);
-    }
+class RealParam extends DefaultParameterType<Float> {
+   RealParam() {
+      super("FLOAT", 'F', C_REAL_LENGHT * 2);
+   }
 
-    @Override
-    public Double readArray(byte[] p) {
-        ByteBuffer byteBuffer = ByteBuffer.wrap(p);
-        return byteBuffer.getDouble();
-    }
+   @Override
+   public byte[] writeArray(Float aFloat) {
+      ByteBuffer byteBuffer = ByteBuffer.allocate(4);
+      byteBuffer.putFloat(aFloat);
+      return byteBuffer.array();
+   }
 
-    @Override
-    public byte[] writeArray(Double aDouble) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(8);
-        byteBuffer.putDouble(aDouble);
-        return byteBuffer.array();      
-    }
+   @Override
+   public Float readArray(byte[] p) {
+      ByteBuffer byteBuffer = ByteBuffer.wrap(p);
+      return byteBuffer.getFloat();
+   }
 }

@@ -39,13 +39,13 @@ public enum DataSourceState {
       this.value = value;
    }
 
-   EnumSet<DataSourceState> computeFromFlagInt(short flags){
+   EnumSet<DataSourceState> computeFromFlagInt(short flags) {
       EnumSet<DataSourceState> result = EnumSet.noneOf(DataSourceState.class);
       for (DataSourceState dataSourceState : values()) {
-         if((flags & dataSourceState.value) != 0){
+         if ((flags & dataSourceState.value) != 0) {
             result.add(dataSourceState);
          }
       }
       return result;
-    }
+   }
 }

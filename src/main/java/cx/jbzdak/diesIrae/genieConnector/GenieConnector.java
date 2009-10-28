@@ -25,8 +25,6 @@ package cx.jbzdak.diesIrae.genieConnector;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -35,7 +33,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * User: Jacek Bzdak jbzdak@gmail.com
  */
 @ThreadSafe
-public class GenieConnector  extends SimpleConnector{
+public class GenieConnector extends SimpleConnector {
 
    private static final ConnectorStateWatcher CONNECTOR_STATE_WATCHER = new ConnectorStateWatcher();
 
@@ -50,6 +48,7 @@ public class GenieConnector  extends SimpleConnector{
    private boolean updateResults = true;
 
    public GenieConnector() {
+      super();
       task = CONNECTOR_STATE_WATCHER.registerConnector(this);
    }
 
@@ -76,20 +75,20 @@ public class GenieConnector  extends SimpleConnector{
 
    public SpectrometricResult getLastResult() {
       readWriteLock.readLock().lock();
-      try{
+      try {
          return lastResult;
-      }finally {
+      } finally {
          readWriteLock.readLock().unlock();
-      }      
+      }
    }
 
    public void setLastResult(SpectrometricResult lastResult) {
       readWriteLock.writeLock().lock();
-      try{
+      try {
          SpectrometricResult oldLastResult = this.lastResult;
          this.lastResult = lastResult;
          support.firePropertyChange("lastResult", oldLastResult, this.lastResult);
-      }finally {
+      } finally {
          readWriteLock.writeLock().unlock();
       }
    }
@@ -97,16 +96,16 @@ public class GenieConnector  extends SimpleConnector{
    @Override
    public boolean isAcquiring() {
       readWriteLock.readLock().lock();
-      try{
-      return acquiring;
-      }finally {
+      try {
+         return acquiring;
+      } finally {
          readWriteLock.readLock().unlock();
       }
    }
 
    void setAcquiring(boolean acquiring) {
       readWriteLock.writeLock().lock();
-      if(this.acquiring != acquiring){
+      if (this.acquiring != acquiring) {
          this.acquiring = acquiring;
          support.firePropertyChange("acquiring", !acquiring, acquiring);
       }
@@ -119,39 +118,13 @@ public class GenieConnector  extends SimpleConnector{
       super.closeNoCheck();
    }
 
-   public void updateState(){
-      if(getConnectorState().equals(ConnectorState.OPEN)){
+   public void updateState() {
+      if (getConnectorState().equals(ConnectorState.OPEN)) {
          setAcquiring(super.isAcquiring());
-       }
+      }
    }
 
-   public void updateLastResult(){
+   public void updateLastResult() {
       setLastResult(getSpectrometricData());
-   }
-}
-
-class ConnectorStateWatcher extends Timer {
-
-   public Task registerConnector(GenieConnector connector){
-      Task task= new Task(connector);
-      scheduleAtFixedRate(task, 0, connector.getRefreshTime());
-      return task;
-   }
-
-   class Task extends TimerTask {
-
-      private final GenieConnector genieConnector;
-
-      private Task(GenieConnector genieConnector) {
-         this.genieConnector = genieConnector;
-      }
-
-      @Override
-      public void run() {
-         genieConnector.updateState();
-         if(genieConnector.isUpdateResults()){
-            genieConnector.updateLastResult();
-         }
-      }
    }
 }

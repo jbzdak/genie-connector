@@ -20,25 +20,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.jbzdak.diesIrae.genieConnector.enums.paramType;
+package cx.jbzdak.diesIrae.genieConnector;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jacek Bzdak jbzdak@gmail.com
+ * Cokolwiek to jest . . .
  */
-class ByteParam extends ParameterType<Byte>{
+class G_Param extends DefaultParameterType<Object> {
+   G_Param() {
+      super("GReal", 'G', C_REAL_LENGHT * 4);
+   }
 
-    ByteParam() {
-        super("BYTE", 'B', 1);
-    }
+   @Override
+   public byte[] writeArray(Object o) {
+      throw new UnsupportedOperationException();
+   }
 
-    @Override
-    public Byte readArray(byte[] inputBuffer) {
-        return inputBuffer[0];
-    }
-
-    @Override
-    public byte[] writeArray(Byte aByte) {
-        return new byte[]{aByte};
-    }
+   @Override
+   public Object readArray(byte[] p) {
+      throw new UnsupportedOperationException();
+   }
 }

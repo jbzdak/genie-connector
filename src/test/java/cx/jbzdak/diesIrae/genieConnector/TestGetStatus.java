@@ -37,12 +37,12 @@ import java.util.Random;
  */
 public class TestGetStatus {
 
-      GenieConnector connector;
+    SimpleConnector connector;
 
     private static Random random = new SecureRandom();
     @BeforeClass
     public static void beforeClass() throws Exception{
-        Class.forName("cx.jbzdak.diesIrae.genieConnector.GenieConnector");
+        Class.forName("cx.jbzdak.diesIrae.genieConnector.SimpleConnector");
     }
 
     @Before
@@ -57,7 +57,7 @@ public class TestGetStatus {
 
       @Test
     public void testGetStatus() throws Exception{
-        Field f = GenieConnector.class.getDeclaredField("dsc");
+        Field f = SimpleConnector.class.getDeclaredField("dsc");
         f.setAccessible(true);
         DscPointer pointer =(DscPointer) f.get(connector);
         LibraryWrapper.getDetailedError(pointer);
