@@ -85,7 +85,7 @@ public class SimpleConnector {
       assertMayOpen();
       doCall(new Call<Void>() {
          @Override Void doCall() throws ConnectorException {
-            LibraryWrapper.openDatasource(dsc, datasource, type, mode, false, "");
+            LibraryWrapper.openDatasource(dsc, datasource, type, mode, true, "");
             setConnectorState(ConnectorState.OPEN);
             return null;
          }
@@ -122,7 +122,7 @@ public class SimpleConnector {
    }
 
    public <T> T getParam(final Parameter<T> parameter) {
-      return getParam(parameter, 0, 0);
+      return getParam(parameter, 1, 1);
    }
 
    public <T> void setParam(final Parameter<T> parameter, final T value, final int record, final int entry) {
@@ -150,7 +150,7 @@ public class SimpleConnector {
    }
 
    public <T> void setParam(final Parameter<T> parameter, final T value) {
-      setParam(parameter, value, 0, 0);
+      setParam(parameter, value, 1, 1);
    }
 
    public void flush() {

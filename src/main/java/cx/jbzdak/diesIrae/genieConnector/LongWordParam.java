@@ -52,7 +52,7 @@ class LongWordParam extends ParameterType<Long> {
       NativeLongByReference resultRef = new NativeLongByReference();
       resultRef.setValue(new NativeLong(value));
       short errorCode =
-              library.SadPutParam(dscPointer, new NativeLong(param.getParamId()), usRecord, usEntry, resultRef, (short) NativeLong.SIZE);
+              library.SadPutParam(dscPointer, new NativeLong(param.getParamId()), usRecord, usEntry, resultRef, (short) 4);
       LibraryWrapper.checkError(errorCode);
    }
 }

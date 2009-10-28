@@ -48,6 +48,7 @@ public class GenieConnector extends SimpleConnector {
    private boolean updateResults = true;
 
    public GenieConnector() {
+      super();
       task = CONNECTOR_STATE_WATCHER.registerConnector(this);
    }
 
