@@ -121,6 +121,7 @@ public class SimpleConnector {
       });
    }
 
+   @Deprecated
    public <T> T getParam(final Parameter<T> parameter) {
       return getParam(parameter, 1, 1);
    }
@@ -149,6 +150,7 @@ public class SimpleConnector {
       });
    }
 
+   @Deprecated
    public <T> void setParam(final Parameter<T> parameter, final T value) {
       setParam(parameter, value, 1, 1);
    }

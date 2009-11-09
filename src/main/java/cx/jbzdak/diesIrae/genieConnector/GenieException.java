@@ -32,7 +32,7 @@ import org.apache.commons.lang.StringUtils;
  * User: Jacek Bzdak jbzdak@gmail.com
  */
 public class GenieException extends RuntimeException {
-   @NonNull private final int errorCode;
+   private final int errorCode;
 
    @CheckForNull private final Long detailedErrorCode;
 
