@@ -58,12 +58,12 @@ public class DSPreset extends Structure implements Serializable {
    /**
     * First channel that will be read
     */
-   public NativeLong ulStartCh;
+   public NativeLong ulStartCh= new NativeLong(0);
 
    /**
     * Last channel that will be read
     */
-   public NativeLong ulStopCh;
+   public NativeLong ulStopCh= new NativeLong(0);
 
    public void setFlPsetMode(PresetMode flPsetMode) {
       updatePresetTime(flPsetMode);

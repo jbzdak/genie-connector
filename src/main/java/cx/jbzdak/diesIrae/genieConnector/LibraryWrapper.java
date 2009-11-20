@@ -103,7 +103,6 @@ import java.util.EnumSet;
    }
 
    public static IntBuffer getSpectralData(DscPointer dsc, short startChan, short endChan) throws ConnectorException {
-
       IntBuffer resultBuffer = IntBuffer.allocate(endChan - startChan);
       int currentStartIdx = startChan;
       while (currentStartIdx < endChan) {
@@ -135,6 +134,10 @@ import java.util.EnumSet;
 
    public static void putStruct(DscPointer dscPointer, Structure structure, short entry, short record) throws ConnectorException {
       checkError(GENIE_LIBRARY.SadPutStruct(dscPointer, StructureType.getStructureId(structure), record, entry, structure.getPointer(), (short) structure.size()));
+   }
+
+   public static void putStruct(DscPointer dscPointer, GenieStructure genieStructure) throws ConnectorException {
+      checkError(GENIE_LIBRARY.SadPutStruct(dscPointer, genieStructure.getStructureId(), genieStructure.getRecord(), genieStructure.getEntry(), genieStructure.getStructure(), genieStructure.getSize()));
    }
 
    public static void setPreset(DscPointer dscPointer, DSPreset preset) throws ConnectorException {

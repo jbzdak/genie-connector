@@ -63,6 +63,7 @@ class GenieConnectorStaticData {
    private static Map<String, Object> createLibOptions() {
       Map<String, Object> result = new HashMap<String, Object>();
       result.put(Library.OPTION_FUNCTION_MAPPER, new GenieFunctionMapper());
+      result.put(Library.OPTION_STRUCTURE_ALIGNMENT, Integer.valueOf(2));
       return result;
    }
 

@@ -25,6 +25,7 @@ package cx.jbzdak.diesIrae.genieConnector;
 import com.sun.jna.Library;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.ptr.ShortByReference;
@@ -149,6 +150,17 @@ import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
     * @return
     */
    public short SadPutStruct(DscPointer sdc, short structType, short record, short entry, Pointer ptr, short structSize);
+
+     /**
+    * @param sdc
+    * @param structType
+    * @param record
+    * @param entry
+    * @param ptr
+    * @param structSize
+    * @return
+    */
+   public short SadPutStruct(DscPointer sdc, short structType, short record, short entry, Structure str, short structSize);
 
    /**
     * Powoduje wyplucie danych do pliku/urządzenia

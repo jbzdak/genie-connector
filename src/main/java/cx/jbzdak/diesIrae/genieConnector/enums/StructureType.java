@@ -35,7 +35,7 @@ import java.util.Map;
  * Time: 13:33:27
  */
 public enum StructureType {
-   DSPreset(cx.jbzdak.diesIrae.genieConnector.structs.DSPreset.class, (short) 36);
+   DSPreset(cx.jbzdak.diesIrae.genieConnector.structs.DSPreset.class, (short) 28);
 
    private final Class<? extends Structure> structureClass;
 
