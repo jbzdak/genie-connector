@@ -41,7 +41,7 @@ public class Preset extends AbstractGenieStructure{
    }
 
    private void initPreset() {
-      dsPreset.clear();
+      dsPreset = new DSPreset();
       if(!EnumSet.of(PresetMode.LIVE, PresetMode.REAL).contains(presetMode)){
          throw new UnsupportedOperationException("Modes other than LIVE and REAL are unsupported for now.");
       }
@@ -97,9 +97,5 @@ public class Preset extends AbstractGenieStructure{
 
    public TimeUnit getTimeUnit() {
       return timeUnit;
-   }
-
-   public void setTimeUnit(TimeUnit timeUnit) {
-      this.timeUnit = timeUnit;
    }
 }

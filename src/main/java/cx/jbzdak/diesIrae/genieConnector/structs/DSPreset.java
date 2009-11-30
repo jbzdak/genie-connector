@@ -65,6 +65,10 @@ public class DSPreset extends Structure implements Serializable {
     */
    public NativeLong ulStopCh= new NativeLong(0);
 
+   public DSPreset() {
+      setAlignType(ALIGN_NONE);
+   }
+
    public void setFlPsetMode(PresetMode flPsetMode) {
       updatePresetTime(flPsetMode);
       setFlPsetMode(new NativeLong(flPsetMode.getPresetValue()));
