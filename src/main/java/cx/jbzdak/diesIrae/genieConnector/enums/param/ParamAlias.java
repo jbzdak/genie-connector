@@ -42,6 +42,8 @@ public class ParamAlias<T> implements Parameter<T> {
     */
    public static final ParamAlias<Long> COINCIDENCE_MODE = new ParamAlias<Long>(Parameters.L_ADCFANTIC);
 
+   public static final ParamAlias<Double> LIVE_TIME = new ParamAlias<Double>(Parameters.X_ELIVE);
+
    /**
     * Maximum number of gain passes
     */

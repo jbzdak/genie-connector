@@ -26,6 +26,7 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 import cx.jbzdak.diesIrae.genieConnector.enums.*;
+import cx.jbzdak.diesIrae.genieConnector.enums.param.ParamAlias;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPresetTime;
@@ -55,8 +56,6 @@ public class SimpleConnector {
    private short startChannel = 1;
 
    private short endChannel = 1;
-
-   private DSPreset preset;
 
    protected final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -99,6 +98,21 @@ public class SimpleConnector {
             return LibraryWrapper.getStatus(dsc);
          }
       });
+   }
+
+   /**
+    * Returns live time in seconds
+    */
+   public double getLiveTime(){
+      return  getParam(ParamAlias.LIVE_TIME, 0, 0);
+   }
+
+   public CoincidenceMode getCoincidenceMode(){
+      return CoincidenceMode.readLong(getParam(ParamAlias.COINCIDENCE_MODE, 1, 1));
+   }
+
+   public void setCoincidenceMode(CoincidenceMode coincidenceMode){
+      setParam(ParamAlias.COINCIDENCE_MODE, coincidenceMode.getValue(), 1, 1);
    }
 
    /**
@@ -221,22 +235,6 @@ public class SimpleConnector {
       closeNoCheck();
    }
 
-   public DSPreset getPreset() {
-      return (DSPreset) CloneTransformer.getInstance().transform(preset);
-   }
-
-   public void setLiveTime(double timeout) {
-      //throw new UnsupportedOperationException();
-//      DSPreset preset = new DSPreset();
-//      DSPresetTime time = new DSPresetTime();
-//      time.setTime(timeout);
-//      preset.setDsPresetTime(time);
-//      preset.setUlStartCh(new NativeLong(getStartChannel()));
-//      preset.setUlStopCh(new NativeLong(getEndChannel()));
-//      preset.setFlPsetMode(PresetMode.REAL);
-//      setPreset(preset);
-   }
-
 
    public void setPreset(final Preset preset) {
       assertOpened();
@@ -247,19 +245,6 @@ public class SimpleConnector {
          }
       });
    }
-//
-//   protected void setPreset(final DSPreset preset) {
-//      assertOpened();
-//      if (this.preset != preset) {
-//         this.preset = preset;
-//         doCall(new Call<Object>() {
-//            @Override Object doCall() throws ConnectorException {
-//               LibraryWrapper.setPreset(dsc, preset);
-//               return null;
-//            }
-//         }, "preset = " + preset);
-//      }
-//   }
 
    public FlushType getFlush() {
       return flush;
