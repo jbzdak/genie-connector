@@ -26,6 +26,7 @@ import com.sun.jna.Library;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
+import com.sun.jna.ptr.DoubleByReference;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.ptr.ShortByReference;
@@ -109,6 +110,8 @@ import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
      */
     public short SadGetParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, NativeLongByReference result, short usExpect);
 
+    public short SadGetParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, DoubleByReference result, short usExpect);
+
    /**
     * Ustawia parametr CAMA
     *
@@ -123,6 +126,8 @@ import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
    public short SadPutParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, byte[] result, short usExpect);
 
    public short SadPutParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, NativeLongByReference result, short usExpect);
+
+   public short SadPutParam(DscPointer hDSC, NativeLong ulParam, short usRecord, short usEntry, DoubleByReference result, short usExpect);
 
    /**
     * Zamyka żródło danych otwarte przes DSC

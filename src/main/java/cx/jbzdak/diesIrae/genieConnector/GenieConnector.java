@@ -49,9 +49,21 @@ public class GenieConnector extends SimpleConnector {
 
    private boolean updateResults = true;
 
+   double liveTime;
+
    public GenieConnector() {
       super();
       task = CONNECTOR_STATE_WATCHER.registerConnector(this);
+   }
+
+   public double getLiveTime() {
+      return liveTime;
+   }
+
+   void setLiveTime(double liveTime) {
+      double oldLiveTime = this.liveTime;
+      this.liveTime = liveTime;
+      support.firePropertyChange("liveTime", oldLiveTime, this.liveTime);
    }
 
    @GuardedBy("this.acquiringLock")
@@ -128,6 +140,7 @@ public class GenieConnector extends SimpleConnector {
    public void updateState() {
       if (getConnectorState().equals(ConnectorState.OPEN)) {
          setAcquiring(super.isAcquiring());
+         setLiveTime(super.getLiveTime());
       }
    }
 
