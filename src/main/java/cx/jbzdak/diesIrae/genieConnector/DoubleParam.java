@@ -22,6 +22,8 @@
 
 package cx.jbzdak.diesIrae.genieConnector;
 
+import com.sun.jna.NativeLong;
+import com.sun.jna.ptr.DoubleByReference;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 
 /**
@@ -35,11 +37,17 @@ class DoubleParam extends ParameterType<Double> {
 
    @Override
    public Double readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
-      throw new UnsupportedOperationException();
+      DoubleByReference resultReference = new DoubleByReference();
+      int error = library.SadGetParam(dscPointer, new NativeLong(param.getParamId()), usRecord, usEntry, resultReference, (short)8);
+      LibraryWrapper.checkError(error);
+      return  resultReference.getValue();
    }
 
    @Override
    public void writeParam(GenieLibrary library, Double value, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
-      throw new UnsupportedOperationException();
+      DoubleByReference ref = new DoubleByReference();
+      ref.setValue(value);
+      int error = library.SadPutParam(dscPointer, new NativeLong(param.getParamId()), usRecord, usEntry, ref, (short)8);
+      LibraryWrapper.checkError(error);
    }
 }

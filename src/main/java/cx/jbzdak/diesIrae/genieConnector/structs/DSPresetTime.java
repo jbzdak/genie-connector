@@ -40,10 +40,10 @@ import java.io.Serializable;
  * Time: 14:58:57
  */
 public class DSPresetTime extends Union implements Serializable {
+   
+   public Double time;
 
    public NativeLong sweep;
-
-   public Double time;
 
    public Double getTime() {
       return time;

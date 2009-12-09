@@ -22,9 +22,11 @@
 
 package cx.jbzdak.diesIrae.genieConnector;
 
+import cx.jbzdak.diesIrae.genieConnector.enums.OpCode;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
+import java.nio.IntBuffer;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -47,9 +49,21 @@ public class GenieConnector extends SimpleConnector {
 
    private boolean updateResults = true;
 
+   double liveTime;
+
    public GenieConnector() {
       super();
       task = CONNECTOR_STATE_WATCHER.registerConnector(this);
+   }
+
+   public double getLiveTime() {
+      return liveTime;
+   }
+
+   void setLiveTime(double liveTime) {
+      double oldLiveTime = this.liveTime;
+      this.liveTime = liveTime;
+      support.firePropertyChange("liveTime", oldLiveTime, this.liveTime);
    }
 
    @GuardedBy("this.acquiringLock")
@@ -63,6 +77,11 @@ public class GenieConnector extends SimpleConnector {
       this.refreshTime = refreshTime;
       task.cancel();
       task = CONNECTOR_STATE_WATCHER.registerConnector(this);
+   }
+
+   public void clearData(){
+      controlDSC(OpCode.CLEAR_DATA);
+      setLastResult(new SpectrometricResult((short)getStartChannel(), (short)getEndChannel(), IntBuffer.allocate(getEndChannel()-getStartChannel())));
    }
 
    public boolean isUpdateResults() {
@@ -121,6 +140,7 @@ public class GenieConnector extends SimpleConnector {
    public void updateState() {
       if (getConnectorState().equals(ConnectorState.OPEN)) {
          setAcquiring(super.isAcquiring());
+         setLiveTime(super.getLiveTime());
       }
    }
 

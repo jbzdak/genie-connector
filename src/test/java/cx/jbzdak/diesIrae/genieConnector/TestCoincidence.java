@@ -1,17 +1,16 @@
 package cx.jbzdak.diesIrae.genieConnector;
 
-import cx.jbzdak.diesIrae.genieConnector.enums.OpCode;
-import cx.jbzdak.diesIrae.genieConnector.enums.OpenMode;
-import cx.jbzdak.diesIrae.genieConnector.enums.SourceType;
-import cx.jbzdak.diesIrae.genieConnector.enums.Status;
+import cx.jbzdak.diesIrae.genieConnector.enums.*;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.ParamAlias;
+import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
+import cx.jbzdak.diesIrae.struct.Preset;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.EnumSet;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,7 +31,7 @@ public class TestCoincidence {
          connector.controlDSC(OpCode.ABORT_ACQUISITION);
       }   
       connector.controlDSC(OpCode.CLEAR_DATA);
-      connector.setLiveTime(5);
+      //connector.setLiveTime(5);
    }
 
    @After
@@ -59,6 +58,17 @@ public class TestCoincidence {
    public void test3(){
       long result = connector.getParam(ParamAlias.COINCIDENCE_MODE);
       Assert.assertTrue(result == 1 || result == 0);
+   }
+
+
+   @Test
+   public void test4(){
+      Preset preset =  new Preset();
+      preset.setPresetMode(PresetMode.LIVE);
+      preset.setTime(10, TimeUnit.MINUTES);
+      connector.setPreset(preset);
+      connector.flush();
+      System.out.println("DSPreset().size()" + new DSPreset().size());
    }
 
 }

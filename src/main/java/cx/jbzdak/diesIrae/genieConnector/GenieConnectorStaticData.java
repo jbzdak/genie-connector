@@ -24,6 +24,7 @@ package cx.jbzdak.diesIrae.genieConnector;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import com.sun.jna.Structure;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +64,7 @@ class GenieConnectorStaticData {
    private static Map<String, Object> createLibOptions() {
       Map<String, Object> result = new HashMap<String, Object>();
       result.put(Library.OPTION_FUNCTION_MAPPER, new GenieFunctionMapper());
+      result.put(Library.OPTION_STRUCTURE_ALIGNMENT, Structure.ALIGN_NONE);
       return result;
    }
 
