@@ -30,7 +30,8 @@ import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.ptr.ShortByReference;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
 
-@SuppressWarnings({"MethodWithTooManyParameters", "UnusedReturnValue"}) interface GenieLibrary extends Library {
+@SuppressWarnings({"MethodWithTooManyParameters", "UnusedReturnValue"})
+interface GenieLibrary extends Library {
 
 
    /**

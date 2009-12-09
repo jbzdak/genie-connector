@@ -40,7 +40,7 @@ public class GenieConnectorTest {
     GenieConnector connector;
 
     private static Random random = new SecureRandom();
-    @BeforeClass
+   @BeforeClass
     public static void beforeClass() throws Exception{
         Class.forName("cx.jbzdak.diesIrae.genieConnector.GenieConnector");
     }
