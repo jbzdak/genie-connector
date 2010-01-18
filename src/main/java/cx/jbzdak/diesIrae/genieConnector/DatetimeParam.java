@@ -28,18 +28,10 @@ import java.util.Date;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class DatetimeParam extends DefaultParameterType<Date> {
-   DatetimeParam() {
-      super("DATE", 'X', -1);
-   }
+class DatetimeParam extends DoubleParam {
 
-   @Override
-   public Date readArray(byte[] p) {
-      throw new UnsupportedOperationException();
-   }
+    DatetimeParam() {
+        super("DATETIME", 'X');
+    }
 
-   @Override
-   public byte[] writeArray(Date date) {
-      throw new UnsupportedOperationException();
-   }
 }

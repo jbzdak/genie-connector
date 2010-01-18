@@ -35,7 +35,11 @@ class DoubleParam extends ParameterType<Double> {
       super("DOUBLE", 'D');
    }
 
-   @Override
+    DoubleParam(String name, char identifierChar) {
+        super(name, identifierChar);
+    }
+
+    @Override
    public Double readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
       DoubleByReference resultReference = new DoubleByReference();
       int error = library.SadGetParam(dscPointer, new NativeLong(param.getParamId()), usRecord, usEntry, resultReference, (short)8);
