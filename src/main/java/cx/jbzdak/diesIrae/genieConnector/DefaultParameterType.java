@@ -11,7 +11,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * Date: 2009-10-27
  * Time: 14:16:13
  */
-public abstract class DefaultParameterType<T> extends ParameterType<T>{
+abstract class DefaultParameterType<T> extends ParameterType<T>{
 
 
    private final short byteLenght;

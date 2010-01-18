@@ -61,7 +61,7 @@ public abstract class ParameterType<T> {
    ParameterType<String> CHARACTER = new CharacterParam();
 
    public static final
-   ParameterType<Date> DATETIME = new DatetimeParam();
+   ParameterType<Double> DATETIME = new DatetimeParam();
 
    public static final
    ParameterType<?> UNKNOWN_TYPE = new ParameterType<Object>("UNKNOWN", '\0') {
