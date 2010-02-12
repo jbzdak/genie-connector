@@ -22,13 +22,16 @@
 
 package cx.jbzdak.diesIrae.genieConnector;
 
-import cx.jbzdak.diesIrae.genieConnector.enums.OpCode;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import java.nio.IntBuffer;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import cx.ath.jbzdak.spectrometric.api.SpectrometricResult;
+import cx.ath.jbzdak.spectrometric.util.IntBufferResult;
+import cx.jbzdak.diesIrae.genieConnector.enums.OpCode;
 
 /**
  * Created by IntelliJ IDEA.
@@ -81,7 +84,7 @@ public class GenieConnector extends SimpleConnector {
 
    public void clearData(){
       controlDSC(OpCode.CLEAR_DATA);
-      setLastResult(new SpectrometricResult((short)getStartChannel(), (short)getEndChannel(), IntBuffer.allocate(getEndChannel()-getStartChannel())));
+      setLastResult(new IntBufferResult(getStartChannel(), getEndChannel(), IntBuffer.wrap(new int[getEndChannel() - getStartChannel()])));
    }
 
    public boolean isUpdateResults() {

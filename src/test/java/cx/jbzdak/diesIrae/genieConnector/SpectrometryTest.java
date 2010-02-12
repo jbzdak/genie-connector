@@ -22,7 +22,6 @@
 
 package cx.jbzdak.diesIrae.genieConnector;
 
-import cx.jbzdak.diesIrae.genieConnector.enums.OpenMode;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
@@ -33,6 +32,9 @@ import java.io.File;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
+import cx.ath.jbzdak.spectrometric.api.SpectrometricResult;
+import cx.jbzdak.diesIrae.genieConnector.enums.OpenMode;
 
 /**
  * Created by IntelliJ IDEA.
@@ -81,19 +83,19 @@ public class SpectrometryTest {
 
      @Test
     public void testSpectrometricData(){
-         System.out.println(data.getCountForChannel(1));
+         System.out.println(data.get(1));
     }
 
     @Test
     public void testZero(){
-        Assert.assertEquals(0,data.getCountForChannel(3));
+        Assert.assertEquals(0,data.get(3));
     }
 
     @Test
      public void testChannels(){
          for(Map.Entry<Integer, Integer> entry : expectedValues.entrySet()){
              System.out.println(entry);
-             Assert.assertEquals(entry.toString(),entry.getValue().intValue(), data.getCountForChannel(entry.getKey()));
+             Assert.assertEquals(entry.toString(),entry.getValue().intValue(), data.get(entry.getKey()));
          }
      }
 

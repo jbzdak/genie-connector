@@ -22,22 +22,22 @@
 
 package cx.jbzdak.diesIrae.genieConnector;
 
-import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
-import cx.jbzdak.diesIrae.genieConnector.enums.*;
-import cx.jbzdak.diesIrae.genieConnector.enums.param.ParamAlias;
-import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
-import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
-import cx.jbzdak.diesIrae.genieConnector.structs.DSPresetTime;
-import cx.jbzdak.diesIrae.struct.Preset;
-import org.apache.commons.collections.functors.CloneTransformer;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
+import java.nio.IntBuffer;
 import java.util.EnumSet;
 import java.util.Set;
+
+import cx.ath.jbzdak.spectrometric.api.SpectrometricResult;
+import cx.ath.jbzdak.spectrometric.util.IntBufferResult;
+import cx.jbzdak.diesIrae.genieConnector.enums.*;
+import cx.jbzdak.diesIrae.genieConnector.enums.param.ParamAlias;
+import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+import cx.jbzdak.diesIrae.struct.Preset;
 
 /**
  * Created by IntelliJ IDEA.
@@ -182,7 +182,8 @@ public class SimpleConnector {
    SpectrometricResult getSpectrometricData(final int start, final int end) {
       return doCall(new Call<SpectrometricResult>() {
          @Override SpectrometricResult doCall() throws ConnectorException {
-            SpectrometricResult lastResult = new SpectrometricResult((short) start, (short) end, LibraryWrapper.getSpectralData(dsc, (short) start, (short) end));
+            IntBuffer result = LibraryWrapper.getSpectralData(dsc, (short) start, (short) end);
+            SpectrometricResult lastResult = new IntBufferResult(start, end, result);
             //setLastResult(lastResult);
             return lastResult;
          }
