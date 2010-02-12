@@ -10,12 +10,12 @@ public enum CoincidenceMode {
    /**
     * Coincidence is enabled
     */
-   COINCIDENCE(0),
+   COINCIDENCE(1),
    /**
     * Coincidence is disabled,
     * and anticoincidence input is active
     */
-   ANTI_COINCIDENCE(1);
+   ANTI_COINCIDENCE(0);
 
    public static CoincidenceMode readLong(long value){
       for (CoincidenceMode mode : values()) {
