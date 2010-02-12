@@ -53,7 +53,7 @@ import java.util.Date;
    ParamImpl<Float>  F_DWELL = new ParamImpl<Float>('F', 0X20000014, "DWELL");
    ParamImpl<Date>  X_ASTIME = new ParamImpl<Date>('X', 0X20000015, "ASTIME");
    ParamImpl<Date>  X_EREAL = new ParamImpl<Date>('X', 0X20000016, "EREAL");
-   ParamImpl<Date>  X_ELIVE = new ParamImpl<Date>('X', 0X20000017, "ELIVE");
+   ParamImpl<Double>  X_ELIVE = new ParamImpl<Double>('D', 0X20000017, "ELIVE");
    ParamImpl<Long>  L_ACQMFLGS = new ParamImpl<Long>('L', 0X20000018, "ACQMFLGS");
    ParamImpl<Float>  F_ECALCHISQ = new ParamImpl<Float>('F', 0X20000019, "ECALCHISQ");
    ParamImpl<Float>  F_FWHMCHISQ = new ParamImpl<Float>('F', 0X2000001A, "FWHMCHISQ");

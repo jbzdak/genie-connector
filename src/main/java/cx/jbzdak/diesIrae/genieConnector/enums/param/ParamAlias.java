@@ -29,7 +29,8 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-public class ParamAlias<T> implements Parameter<T> {
+public class
+        ParamAlias<T> implements Parameter<T> {
 
    public static final ParamAlias<String> SAMPLE_IDENTIFIER = new ParamAlias<String>(Parameters.T_SIDENT);
 
