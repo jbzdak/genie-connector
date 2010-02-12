@@ -1,7 +1,7 @@
 /*
  * GenieConnector java library to connect with
  * Canberra Genie 2000 library
- * Copyright (C) 2009 Jacek Bzdak jbzdak@gmail.com
+ * Copyright (C) 2009 - 2010 Jacek Bzdak jbzdak@gmail.com
  *
  * This program was written for my BA in Faculty of Physics of
  * Warsaw University of Technology.
@@ -61,7 +61,7 @@ public abstract class ParameterType<T> {
    ParameterType<String> CHARACTER = new CharacterParam();
 
    public static final
-   ParameterType<Double> DATETIME = new DatetimeParam();
+   ParameterType<Date> DATETIME = new DatetimeParam();
 
    public static final
    ParameterType<?> UNKNOWN_TYPE = new ParameterType<Object>("UNKNOWN", '\0') {

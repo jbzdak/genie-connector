@@ -1,7 +1,7 @@
 /*
  * GenieConnector java library to connect with
  * Canberra Genie 2000 library
- * Copyright (C) 2009 Jacek Bzdak jbzdak@gmail.com
+ * Copyright (C) 2009 - 2010 Jacek Bzdak jbzdak@gmail.com
  *
  * This program was written for my BA in Faculty of Physics of
  * Warsaw University of Technology.
@@ -28,10 +28,18 @@ import java.util.Date;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-class DatetimeParam extends DoubleParam {
+class DatetimeParam extends DefaultParameterType<Date> {
+   DatetimeParam() {
+      super("DATE", 'X', -1);
+   }
 
-    DatetimeParam() {
-        super("DATETIME", 'X');
-    }
+   @Override
+   public Date readArray(byte[] p) {
+      throw new UnsupportedOperationException();
+   }
 
+   @Override
+   public byte[] writeArray(Date date) {
+      throw new UnsupportedOperationException();
+   }
 }

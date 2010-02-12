@@ -1,7 +1,7 @@
 /*
  * GenieConnector java library to connect with
  * Canberra Genie 2000 library
- * Copyright (C) 2009 Jacek Bzdak jbzdak@gmail.com
+ * Copyright (C) 2009 - 2010 Jacek Bzdak jbzdak@gmail.com
  *
  * This program was written for my BA in Faculty of Physics of
  * Warsaw University of Technology.
@@ -24,16 +24,20 @@ package cx.jbzdak.diesIrae.genieConnector;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
-import cx.jbzdak.diesIrae.genieConnector.enums.*;
-import cx.jbzdak.diesIrae.genieConnector.enums.param.ParamAlias;
-import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
-import cx.jbzdak.diesIrae.struct.Preset;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
+import java.nio.IntBuffer;
 import java.util.EnumSet;
 import java.util.Set;
+
+import cx.ath.jbzdak.spectrometric.api.SpectrometricResult;
+import cx.ath.jbzdak.spectrometric.util.IntBufferResult;
+import cx.jbzdak.diesIrae.genieConnector.enums.*;
+import cx.jbzdak.diesIrae.genieConnector.enums.param.ParamAlias;
+import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
+import cx.jbzdak.diesIrae.struct.Preset;
 
 /**
  * Created by IntelliJ IDEA.
@@ -132,6 +136,7 @@ public class SimpleConnector {
       });
    }
 
+   @Deprecated
    public <T> T getParam(final Parameter<T> parameter) {
       return getParam(parameter, 1, 1);
    }
@@ -160,6 +165,7 @@ public class SimpleConnector {
       });
    }
 
+   @Deprecated
    public <T> void setParam(final Parameter<T> parameter, final T value) {
       setParam(parameter, value, 1, 1);
    }
@@ -176,7 +182,8 @@ public class SimpleConnector {
    SpectrometricResult getSpectrometricData(final int start, final int end) {
       return doCall(new Call<SpectrometricResult>() {
          @Override SpectrometricResult doCall() throws ConnectorException {
-            SpectrometricResult lastResult = new SpectrometricResult((short) start, (short) end, LibraryWrapper.getSpectralData(dsc, (short) start, (short) end));
+            IntBuffer result = LibraryWrapper.getSpectralData(dsc, (short) start, (short) end);
+            SpectrometricResult lastResult = new IntBufferResult(start, end, result);
             //setLastResult(lastResult);
             return lastResult;
          }

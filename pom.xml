@@ -2,7 +2,7 @@
 <!--
   ~ GenieConnector java library to connect with
   ~ Canberra Genie 2000 library
-  ~ Copyright (C) 2009 Jacek Bzdak jbzdak@gmail.com
+  ~ Copyright (C) 2009 - 2010 Jacek Bzdak jbzdak@gmail.com
   ~
   ~ This program was written for my BA in Faculty of Physics of
   ~ Warsaw University of Technology.
@@ -23,132 +23,135 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>cx.ath.jbzdak</groupId>
-    <artifactId>genieConnector</artifactId>
-    <version>1.0</version>
-    <name>Genie connector</name>
-    <developers>
-        <developer>
-            <name>Jacek Bzdak</name>
-            <email>jbzdak@gmail.com</email>
-            <roles>
-                <role>Everything</role>
-            </roles>
-        </developer>
-    </developers>
-    <issueManagement>
-        <system>fogbugz</system>
-        <url>https://jbsoftware.fogbugz.com/default.asp?pg=pgPublicEdit</url>
-    </issueManagement>
-    <scm>
-        <connection>git://github.com/jbzdak/genie-connector.git</connection>
-        <url>http://github.com/jbzdak/genie-connector</url>
-        <tag>master</tag>
-    </scm>
-    <licenses>
-        <license>
-            <name>GNU GPL 3 or never</name>
-            <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
-            <comments>
-                With exception that you may link it to a Genie 2000 library (and distribute such code, if you have rights to
-                distribute Genie 2000 library by itself).
-                If you need another license send me an email, and I think it can be arranged.
-            </comments>
-        </license>
-    </licenses>
-    <distributionManagement>
-        <repository>
-            <name>Jacek Bzdak repo</name>
-            <id>jbrepo</id>
-            <url>scpexe://skimbleshanks.ath.cx/opt/sonatype-work/nexus/storage/releases</url>
-        </repository>
-        <snapshotRepository>
-            <name>Jacek Bzdak Snapshoot  repo</name>
-            <id>jbrepo-snap</id>
-            <url>scpexe://skimbleshanks.ath.cx/opt/sonatype-work/nexus/storage/public-snapshot/</url>
-            <uniqueVersion>true</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
-    <dependencies>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>3.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.5.6</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.umd.cs.findbugs</groupId>
-            <artifactId>annotations</artifactId>
-            <version>1.3.9</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-        
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>cx.ath.jbzdak</groupId>
+   <artifactId>genieConnector</artifactId>
+   <version>1.1</version>
+   <name>Genie connector</name>
+   <developers>
+      <developer>
+         <name>Jacek Bzdak</name>
+         <email>jbzdak@gmail.com</email>
+         <roles>
+            <role>Everything</role>
+         </roles>
+      </developer>
+   </developers>
+   <issueManagement>
+      <system>fogbugz</system>
+      <url>https://jbsoftware.fogbugz.com/default.asp?pg=pgPublicEdit</url>
+   </issueManagement>
+   <scm>
+      <connection>git://github.com/jbzdak/genie-connector.git</connection>
+      <url>http://github.com/jbzdak/genie-connector</url>
+      <tag>master</tag>
+   </scm>
+   <licenses>
+      <license>
+         <name>GNU GPL 3 or never</name>
+         <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+         <comments>
+            With exception that you may link it to a Genie 2000 library (and distribute such code, if you have rights to
+            distribute Genie 2000 library by itself).
+            If you need another license send me an email, and I think it can be arranged.
+         </comments>
+      </license>
+   </licenses>
+   <distributionManagement>
+      <repository>
+         <name>Jacek Bzdak repo</name>
+         <id>jbrepo</id>
+         <url>scpexe://skimbleshanks.ath.cx/opt/sonatype-work/nexus/storage/releases</url>
+      </repository>
+      <snapshotRepository>
+         <name>Jacek Bzdak Snapshoot  repo</name>
+         <id>jbrepo-snap</id>
+         <url>scpexe://skimbleshanks.ath.cx/opt/sonatype-work/nexus/storage/public-snapshot/</url>
+         <uniqueVersion>true</uniqueVersion>
+      </snapshotRepository>
+   </distributionManagement>
+   <dependencies>
+      <dependency>
+         <groupId>net.java.dev.jna</groupId>
+         <artifactId>jna</artifactId>
+         <version>3.2.3</version>
+      </dependency>
+      <dependency>
+         <groupId>commons-lang</groupId>
+         <artifactId>commons-lang</artifactId>
+         <version>2.4</version>
+      </dependency>
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>1.5.6</version>
+      </dependency>
+      <dependency>
+         <groupId>edu.umd.cs.findbugs</groupId>
+         <artifactId>annotations</artifactId>
+         <version>1.3.9</version>
+      </dependency>
+      <dependency>
+         <groupId>commons-collections</groupId>
+         <artifactId>commons-collections</artifactId>
+         <version>3.2.1</version>
+      </dependency>
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>4.5</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-jdk14</artifactId>
+         <version>1.5.6</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>commons-io</groupId>
+         <artifactId>commons-io</artifactId>
+         <version>1.4</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>cx.ath.jbzdak.spectrometric</groupId>
+         <artifactId>util</artifactId>
+         <version>1.0</version>
+      </dependency>
+   </dependencies>
+   <build>
+      <pluginManagement>
+         <plugins>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-compiler-plugin</artifactId>
+               <configuration>
+                  <source>1.6</source>
+                  <target>1.6</target>
+                  <encoding>UTF-8</encoding>
+               </configuration>
+            </plugin>
+         </plugins>
+      </pluginManagement>
+      <extensions>
+         <extension>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ssh-external</artifactId>
+            <version>1.0-alpha-5</version>
+         </extension>
+      </extensions>
+   </build>
+   <repositories>
+      <repository>
+         <id>skimble-public</id>
+         <url>http://skimbleshanks.ath.cx/maven2/</url>
+         <!-- Prywatne repozytorium autora -->
+      </repository>
+   </repositories>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.5</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>1.5.6</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>1.4</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                        <encoding>UTF-8</encoding>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh-external</artifactId>
-                <version>1.0-alpha-5</version>
-            </extension>
-        </extensions>
-    </build>
-    <repositories>
-        <repository>
-            <id>skimble-public</id>
-            <url>http://skimbleshanks.ath.cx/maven2/</url>
-            <!-- Prywatne repozytorium autora -->
-        </repository>
-    </repositories>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
 
 </project>

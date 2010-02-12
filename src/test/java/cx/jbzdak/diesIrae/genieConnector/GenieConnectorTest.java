@@ -1,7 +1,7 @@
 /*
  * GenieConnector java library to connect with
  * Canberra Genie 2000 library
- * Copyright (C) 2009 Jacek Bzdak jbzdak@gmail.com
+ * Copyright (C) 2009 - 2010 Jacek Bzdak jbzdak@gmail.com
  *
  * This program was written for my BA in Faculty of Physics of
  * Warsaw University of Technology.
@@ -23,13 +23,16 @@
 package cx.jbzdak.diesIrae.genieConnector;
 
 import cx.jbzdak.diesIrae.genieConnector.enums.OpenMode;
+import cx.jbzdak.diesIrae.genieConnector.enums.PresetMode;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.ParamAlias;
+import cx.jbzdak.diesIrae.struct.Preset;
 import org.junit.*;
 
 import java.io.File;
 import java.security.SecureRandom;
 import java.util.EnumSet;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by IntelliJ IDEA.
