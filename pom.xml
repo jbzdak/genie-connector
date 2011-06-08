@@ -20,7 +20,6 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -57,19 +56,7 @@
             </comments>
         </license>
     </licenses>
-    <distributionManagement>
-        <repository>
-            <name>Jacek Bzdak repo</name>
-            <id>jbrepo</id>
-            <url>scpexe://skimbleshanks.ath.cx/opt/sonatype-work/nexus/storage/releases</url>
-        </repository>
-        <snapshotRepository>
-            <name>Jacek Bzdak Snapshoot  repo</name>
-            <id>jbrepo-snap</id>
-            <url>scpexe://skimbleshanks.ath.cx/opt/sonatype-work/nexus/storage/public-snapshot/</url>
-            <uniqueVersion>true</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -117,6 +104,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -139,11 +127,25 @@
             </extension>
         </extensions>
     </build>
+
+      <distributionManagement>
+        <repository>
+            <id>lfitj-ilf</id>
+            <name>lfitj releases</name>
+            <url>http://lfitj.if.pw.edu.pl/artifactory/shared</url>
+        </repository>
+        <snapshotRepository>
+            <id>lfitj-ilf/</id>
+            <name>Lfitj snapshot</name>
+            <url>http://lfitj.if.pw.edu.pl/artifactory/shared</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <repositories>
         <repository>
-            <id>skimble-public</id>
-            <url>http://skimbleshanks.ath.cx/maven2/</url>
-            <!-- Prywatne repozytorium autora -->
+            <name>Repozytorium na lfitj</name>
+            <id>lfitj-ilf-group</id>
+            <url>http://lfitj.if.pw.edu.pl/artifactory/shared/</url>
         </repository>
     </repositories>
 
