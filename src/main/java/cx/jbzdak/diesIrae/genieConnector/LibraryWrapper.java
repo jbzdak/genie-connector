@@ -1,7 +1,7 @@
 /*
  * GenieConnector java library to connect with
  * Canberra Genie 2000 library
- * Copyright (C) 2009 Jacek Bzdak jbzdak@gmail.com
+ * Copyright (C) 2009 - 2010 Jacek Bzdak jbzdak@gmail.com
  *
  * This program was written for my BA in Faculty of Physics of
  * Warsaw University of Technology.
@@ -26,14 +26,16 @@ import com.sun.jna.Structure;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.ptr.ShortByReference;
+
+import java.nio.IntBuffer;
+import java.util.EnumSet;
+
+import cx.ath.jbzdak.spectrometric.api.SpectrometricResult;
 import cx.jbzdak.diesIrae.genieConnector.enums.*;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSPreset;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSQuery;
 import cx.jbzdak.diesIrae.genieConnector.structs.DSResult;
-
-import java.nio.IntBuffer;
-import java.util.EnumSet;
 
 @SuppressWarnings({"StaticMethodOnlyUsedInOneClass"}) class LibraryWrapper {
 
@@ -82,11 +84,11 @@ import java.util.EnumSet;
    }
 
    static void putSpectrum(DscPointer dsc, SpectrometricResult spectrometricResult) throws ConnectorException {
-      int[] results = new int[spectrometricResult.getEndChannel() - spectrometricResult.getStartChannel()];
+      int[] results = new int[spectrometricResult.getLastChannel() - spectrometricResult.getFirstChannel()];
       for (int ii = 0; ii < results.length; ii++) {
-         results[ii] = spectrometricResult.getCountForChannel(spectrometricResult.getStartChannel() + ii);
+         results[ii] = spectrometricResult.get(spectrometricResult.getFirstChannel() + ii);
       }
-      checkError(GENIE_LIBRARY.SadPutSpectrum(dsc, spectrometricResult.getStartChannel(), spectrometricResult.getSize(), results));
+      checkError(GENIE_LIBRARY.SadPutSpectrum(dsc, (short) spectrometricResult.getFirstChannel(), (short) spectrometricResult.getChannelNo(), results));
    }
 
    static <T> T getParam(DscPointer dsc, Parameter<T> param, short record, short entry) throws ConnectorException {

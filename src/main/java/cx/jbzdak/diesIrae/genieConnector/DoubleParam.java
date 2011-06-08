@@ -1,7 +1,7 @@
 /*
  * GenieConnector java library to connect with
  * Canberra Genie 2000 library
- * Copyright (C) 2009 Jacek Bzdak jbzdak@gmail.com
+ * Copyright (C) 2009 - 2010 Jacek Bzdak jbzdak@gmail.com
  *
  * This program was written for my BA in Faculty of Physics of
  * Warsaw University of Technology.
@@ -35,11 +35,7 @@ class DoubleParam extends ParameterType<Double> {
       super("DOUBLE", 'D');
    }
 
-    DoubleParam(String name, char identifierChar) {
-        super(name, identifierChar);
-    }
-
-    @Override
+   @Override
    public Double readParam(GenieLibrary library, DscPointer dscPointer, Parameter param, short usRecord, short usEntry) throws ConnectorException {
       DoubleByReference resultReference = new DoubleByReference();
       int error = library.SadGetParam(dscPointer, new NativeLong(param.getParamId()), usRecord, usEntry, resultReference, (short)8);

@@ -1,7 +1,7 @@
 /*
  * GenieConnector java library to connect with
  * Canberra Genie 2000 library
- * Copyright (C) 2009 Jacek Bzdak jbzdak@gmail.com
+ * Copyright (C) 2009 - 2010 Jacek Bzdak jbzdak@gmail.com
  *
  * This program was written for my BA in Faculty of Physics of
  * Warsaw University of Technology.
@@ -35,7 +35,7 @@ import java.util.Date;
    ParamImpl<String>  T_ACQOPNAME = new ParamImpl<String>('T', 0X20000002, "ACQOPNAME");
    ParamImpl<String>  T_CPNAME = new ParamImpl<String>('T', 0X20000003, "CPNAME");
    ParamImpl<String>  T_ACQMOD = new ParamImpl<String>('T', 0X20000004, "ACQMOD");
-   ParamImpl<Long>  L_CMASK = new ParamImpl<Long>('L', 0X20000005, "CMASK"); 
+   ParamImpl<Long>  L_CMASK = new ParamImpl<Long>('L', 0X20000005, "CMASK");
    ParamImpl<Long>  L_BYTES = new ParamImpl<Long>('L', 0X20000006, "BYTES");
    ParamImpl<Long>  L_CHANNELS = new ParamImpl<Long>('L', 0X20000007, "CHANNELS");
    ParamImpl<Long>  L_ROWS = new ParamImpl<Long>('L', 0X20000008, "ROWS");
@@ -53,7 +53,7 @@ import java.util.Date;
    ParamImpl<Float>  F_DWELL = new ParamImpl<Float>('F', 0X20000014, "DWELL");
    ParamImpl<Date>  X_ASTIME = new ParamImpl<Date>('X', 0X20000015, "ASTIME");
    ParamImpl<Date>  X_EREAL = new ParamImpl<Date>('X', 0X20000016, "EREAL");
-   ParamImpl<Date>  X_ELIVE = new ParamImpl<Date>('X', 0X20000017, "ELIVE");
+   ParamImpl<Double>  X_ELIVE = new ParamImpl<Double>('D', 0X20000017, "ELIVE");
    ParamImpl<Long>  L_ACQMFLGS = new ParamImpl<Long>('L', 0X20000018, "ACQMFLGS");
    ParamImpl<Float>  F_ECALCHISQ = new ParamImpl<Float>('F', 0X20000019, "ECALCHISQ");
    ParamImpl<Float>  F_FWHMCHISQ = new ParamImpl<Float>('F', 0X2000001A, "FWHMCHISQ");

@@ -20,6 +20,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -56,7 +57,26 @@
             </comments>
         </license>
     </licenses>
+    <distributionManagement>
+        <repository>
+            <id>lfitj-ilf</id>
+            <name>lfitj releases</name>
+            <url>http://lfitj.if.pw.edu.pl/artifactory/shared</url>
+        </repository>
+        <snapshotRepository>
+            <id>lfitj-ilf/</id>
+            <name>Lfitj snapshot</name>
+            <url>http://lfitj.if.pw.edu.pl/artifactory/shared</url>
+        </snapshotRepository>
+    </distributionManagement>
 
+    <repositories>
+        <repository>
+            <name>Repozytorium na lfitj</name>
+            <id>lfitj-ilf-group</id>
+            <url>http://lfitj.if.pw.edu.pl/artifactory/shared/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -74,7 +94,7 @@
             <version>1.5.6</version>
         </dependency>
         <dependency>
-            <groupId>cx.ath.jbzdak.external.findbugs</groupId>
+            <groupId>edu.umd.cs.findbugs</groupId>
             <artifactId>annotations</artifactId>
             <version>1.3.9</version>
         </dependency>
@@ -83,8 +103,6 @@
             <artifactId>commons-collections</artifactId>
             <version>3.2.1</version>
         </dependency>
-        
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -103,7 +121,41 @@
             <version>1.4</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>cx.ath.jbzdak.spectrometric</groupId>
+            <artifactId>util</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>1.0-alpha-5</version>
+            </extension>
+        </extensions>
+    </build>
+    <repositories>
+        <repository>
+            <id>skimble-public</id>
+            <url>http://skimbleshanks.ath.cx/maven2/</url>
+            <!-- Prywatne repozytorium autora -->
+        </repository>
+    </repositories>
 
     <build>
         <pluginManagement>
@@ -127,25 +179,11 @@
             </extension>
         </extensions>
     </build>
-
-      <distributionManagement>
-        <repository>
-            <id>lfitj-ilf</id>
-            <name>lfitj releases</name>
-            <url>http://lfitj.if.pw.edu.pl/artifactory/shared</url>
-        </repository>
-        <snapshotRepository>
-            <id>lfitj-ilf/</id>
-            <name>Lfitj snapshot</name>
-            <url>http://lfitj.if.pw.edu.pl/artifactory/shared</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <repositories>
         <repository>
-            <name>Repozytorium na lfitj</name>
-            <id>lfitj-ilf-group</id>
-            <url>http://lfitj.if.pw.edu.pl/artifactory/shared/</url>
+            <id>skimble-public</id>
+            <url>http://skimbleshanks.ath.cx/maven2/</url>
+            <!-- Prywatne repozytorium autora -->
         </repository>
     </repositories>
 

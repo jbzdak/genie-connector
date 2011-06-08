@@ -1,7 +1,7 @@
 /*
  * GenieConnector java library to connect with
  * Canberra Genie 2000 library
- * Copyright (C) 2009 Jacek Bzdak jbzdak@gmail.com
+ * Copyright (C) 2009 - 2010 Jacek Bzdak jbzdak@gmail.com
  *
  * This program was written for my BA in Faculty of Physics of
  * Warsaw University of Technology.
@@ -32,7 +32,7 @@ import org.apache.commons.lang.StringUtils;
  * User: Jacek Bzdak jbzdak@gmail.com
  */
 public class GenieException extends RuntimeException {
-   @NonNull private final int errorCode;
+   private final int errorCode;
 
    @CheckForNull private final Long detailedErrorCode;
 
