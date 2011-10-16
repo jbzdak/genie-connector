@@ -25,7 +25,6 @@ package cx.jbzdak.diesIrae.genieConnector;
 import cx.jbzdak.diesIrae.genieConnector.enums.param.Parameter;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-import javax.annotation.concurrent.ThreadSafe;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -33,7 +32,6 @@ import java.util.*;
  * Created by IntelliJ IDEA.
  * User: Jacek Bzdak jbzdak@gmail.com
  */
-@ThreadSafe
 public abstract class ParameterType<T> {
 
    public static final
